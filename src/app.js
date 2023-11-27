@@ -1,5 +1,6 @@
-const express = require("express");
-const app = express();
+const express = require("express")
+const app = express()
+const jwt = require("jsonwebtoken")
 
 app.get('/', (req, res) => {
     res.send('teste')
@@ -8,5 +9,5 @@ app.get('/', (req, res) => {
 let port = 3000
 
 app.listen(port, function() {
-    console.log('Server is running at port ' + port);
+    console.log('Server is running at port ' + port)
 })
