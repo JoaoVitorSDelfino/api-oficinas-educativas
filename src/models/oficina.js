@@ -52,7 +52,53 @@ const Usuario = db.define('usuario', {
     },
 })
 
+const Participante = db.define('participante', {
+    id: {
+        type: Sequelize.INTEGER,
+        allowNull: false, 
+        primaryKey: true,
+        unique: true, 
+        autoIncrement: true,
+    },
+    presente: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    nota: {
+        type: Sequelize.REAL,
+        allowNull: false,
+    },
+    idUsuario: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    idOficina: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+})
+
+const Organizador = db.define('organizador', {
+    id: {
+        type: Sequelize.INTEGER,
+        allowNull: false, 
+        primaryKey: true,
+        unique: true, 
+        autoIncrement: true,
+    },
+    idUsuario: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    idOficina: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+})
+
 module.exports = {
     Oficina, 
     Usuario,
+    Participante,
+    Organizador
 }
