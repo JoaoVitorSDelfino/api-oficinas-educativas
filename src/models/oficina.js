@@ -52,6 +52,10 @@ const Usuario = db.define('usuario', {
     },
 })
 
+// Definindo relações
+Oficina.hasMany('participante', { foreignKey: 'idOficina' })
+Oficina.hasMany('organizador', { foreignKey: 'idOficina' })
+
 const Participante = db.define('participante', {
     id: {
         type: Sequelize.INTEGER,
@@ -95,6 +99,13 @@ const Organizador = db.define('organizador', {
         allowNull: false,
     },
 })
+
+// Definindo 'pertence a'
+Participante.belongsTo(Oficina, { foreignKey: 'idOficina', allowNull: false })
+Participante.belongsTo(Usuario, { foreignKey: 'idUsuario', allowNull: false })
+
+Organizador.belongsTo(Oficina, { foreignKey: 'idOficina', allowNull: false });
+Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario', allowNull: false });
 
 module.exports = {
     Oficina, 
