@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db/connection')
 
-const Oficina = db.define('oficina', {
+const Usuario = db.define('usuario', {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false, 
@@ -9,25 +9,26 @@ const Oficina = db.define('oficina', {
         unique: true, 
         autoIncrement: true,
     },
+    funcao: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
     nome: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    descricao: {
-        type: Sequelize.STRING,
-    },
-    data: {
+    senha: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    local: {
+    email: {
         type: Sequelize.STRING,
         allowNull: false,
     },
 })
 
 // Definindo relações
-Oficina.hasMany('participante', { foreignKey: 'idOficina' })
-Oficina.hasMany('organizador', { foreignKey: 'idOficina' })
+Usuario.hasMany('participante', { foreignKey: 'idOficina' })
+Usuario.hasMany('organizador', { foreignKey: 'idOficina' })
 
-module.exports = Oficina
+module.exports = Usuario
