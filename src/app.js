@@ -11,9 +11,9 @@ app.use(bodyParser.json())
 const db = require('./db/connection')
 
 db.authenticate().then(() => {
-    console.log("Conectou ao banco de dados com sucesso");
+    console.log("Conectou ao banco de dados com sucesso")
 }).catch(err => {
-    console.log("Ocorreu um erro ao conectar", err);
+    console.log("Ocorreu um erro ao conectar", err)
 })
 
 app.get('/', (req, res) => {
@@ -21,6 +21,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/oficinas', require('./routes/oficinas'))
+app.use('/usuarios', require('./routes/usuarios'))
+app.use('/organizadores', require('./routes/organizadores'))
+app.use('/participantes', require('./routes/participantes'))
 
 let port = 3000
 
