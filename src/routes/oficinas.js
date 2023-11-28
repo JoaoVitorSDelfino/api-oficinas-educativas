@@ -81,17 +81,27 @@ router.put('/edit/:id', async (req, res) => {
     }
 })
 
-// Excluir uma oficina pelo id
+// Deletar uma oficina pelo id
 router.delete('/delete/:id', async (req, res) => {
-    const oficina = await Oficina.findOne({
-        where: { id: req.params.id },
-    });
+    try {
+        const oficina = await Oficina.findOne({
+            where: { id: req.params.id },
+        });
 
-    await Oficina.destroy({
-        where: { id: req.params.id },
-    });
-
-    res.json({status: 'Oficina alterada com sucesso!', oficinaExcluida: oficina});
+        // Valida se oficina informada existe
+        if (oficina) { 
+            await Oficina.destroy({
+                where: { id: req.params.id },
+            });
+        
+            res.json({status: 'Oficina deletada com sucesso!', oficinaExcluida: oficina});
+        } else {
+            res.status(500).json({error: 'ERRO, oficina não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao deletar oficina.'})
+    }
 })
 
 module.exports = router
