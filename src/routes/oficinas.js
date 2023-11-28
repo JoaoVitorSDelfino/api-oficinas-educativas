@@ -15,25 +15,14 @@ router.get('/', async (req, res) => {
 // Adicionar nova oficina
 router.post('/add', async (req, res) => {
     try {
-        let {nome, descricao, data, local} = req.body
-        
-        // Validar campos
-        if (!validation.validarCampoString(nome)) {
-            return res.status(500).json({error: 'ERRO, nome não pode ser vazio!'})
+        // Valida os dados recebidos
+        if (validation.validarOficina(req.body).status) {
+            const oficina = await Oficina.create(req.body)
+
+            res.status(201).json(oficina)
+        } else {
+            res.status(400).json({error: validation.validarOficina(req.body).mensagem})
         }
-
-        validarData = validation.validarData(data)
-        if (validarData.status === false) {
-            return res.status(500).json({error: validarData.mensagem});
-        }
-
-        if (!validation.validarCampoString(local)) {
-            res.status(500).json({error: 'ERRO, local não pode ser vazio!'})
-        }
-
-        const oficina = await Oficina.create({nome, descricao, data, local})
-
-        res.status(201).json(oficina)
     } catch (error) {
         console.error(error);
         res.status(400).json({error: 'ERRO ao criar oficina.'})
@@ -51,7 +40,7 @@ router.get('/view/:id', async (req, res) => {
         if (oficina) {
             res.json(oficina)
         } else {
-            res.status(500).json({error: 'ERRO, oficina não encontrada!'})
+            res.status(500).json({error: 'ERRO, oficina não existe!'})
         }
     } catch (error) {
         console.error(error);
