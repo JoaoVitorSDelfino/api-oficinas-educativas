@@ -5,12 +5,14 @@ const Oficina = require("../models/oficina")
 // Adicionar nova oficina
 router.post('/add', async (req, res) => {
     try {
-        const novaOficina = await Oficina.create(req.body)
+        let {nome, descricao, data, local} = req.body
 
-        res.status(201).json(novaOficina)
+        const oficina = await Oficina.create({nome, descricao, data, local})
+
+        res.status(201).json(oficina)
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Erro ao criar oficina.' })
+        res.status(500).json({ error: 'ERRO ao criar oficina.' })
     }
 })
 
