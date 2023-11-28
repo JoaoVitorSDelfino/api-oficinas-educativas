@@ -36,17 +36,27 @@ router.post('/add', async (req, res) => {
         res.status(201).json(oficina)
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'ERRO ao criar oficina.'})
+        res.status(400).json({error: 'ERRO ao criar oficina.'})
     }
 })
 
 // Pesquisar oficina específica pelo id
 router.get('/view/:id', async (req, res) => {
-    const oficina = await Oficina.findOne({
-                        where: {id: req.params.id}
-                    })
-    
-    res.json(oficina)
+    try {
+        const oficina = await Oficina.findOne({
+            where: {id: req.params.id}
+        })
+
+        // Valida se oficina foi encontrada
+        if (oficina) {
+            res.json(oficina)
+        } else {
+            res.status(500).json({error: 'ERRO, oficina não encontrada!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao buscar oficina'})
+    }
 })
 
 // Alterar uma oficina pelo id
