@@ -27,8 +27,4 @@ const Usuario = db.define('usuario', {
     },
 })
 
-// Definindo relações
-Usuario.hasMany('participante', { foreignKey: 'idOficina' })
-Usuario.hasMany('organizador', { foreignKey: 'idOficina' })
-
 module.exports = Usuario

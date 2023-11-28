@@ -26,8 +26,4 @@ const Oficina = db.define('oficina', {
     },
 })
 
-// Definindo relações
-Oficina.hasMany('participante', { foreignKey: 'idOficina' })
-Oficina.hasMany('organizador', { foreignKey: 'idOficina' })
-
 module.exports = Oficina
