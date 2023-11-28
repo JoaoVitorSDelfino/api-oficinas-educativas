@@ -50,17 +50,34 @@ router.get('/view/:id', async (req, res) => {
 
 // Alterar uma oficina pelo id
 router.put('/edit/:id', async (req, res) => {
-    const linhasAtualizadas = await Oficina.update(
-                                    req.body, 
-                                    {where: {id: req.params.id}}
-                                    )
-
-    if (linhasAtualizadas > 0) {
-        oficinaAtualizada = await Oficina.findOne({
+    try {
+        oficina = await Oficina.findOne({
             where: {id: req.params.id}
         })
 
-        res.json({status: 'Oficina alterada com sucesso!', oficinaAtualizada})
+        // Valida se a oficina informada existe
+        if (oficina) {
+            // Valida se os novos dados são válidos
+            if (validation.validarOficina(req.body).status) {
+                await Oficina.update(
+                    req.body, 
+                    {where: {id: req.params.id}}
+                )
+
+                oficinaAtualizada = await Oficina.findOne({
+                    where: {id: req.params.id}
+                })    
+
+                res.json({status: 'Oficina alterada com sucesso!', oficinaAtualizada})
+            } else {
+                res.status(400).json({error: validation.validarOficina(req.body).mensagem})
+            }
+        } else {
+            res.status(500).json({error: 'ERRO, oficina não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao editar oficina.'})
     }
 })
 
