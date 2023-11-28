@@ -35,7 +35,7 @@ router.get('/view/:id', async (req, res) => {
 })
 
 // Alterar uma oficina pelo id
-router.put("/edit/:id", async (req, res) => {
+router.put('/edit/:id', async (req, res) => {
     const linhasAtualizadas = await Oficina.update(
                                     req.body, 
                                     {where: {id: req.params.id}}
@@ -48,6 +48,19 @@ router.put("/edit/:id", async (req, res) => {
 
         res.json({status: 'Oficina alterada com sucesso!', oficinaAtualizada})
     }
+})
+
+// Excluir uma oficina pelo id
+router.delete('/delete/:id', async (req, res) => {
+    const oficina = await Oficina.findOne({
+        where: { id: req.params.id },
+    });
+
+    await Oficina.destroy({
+        where: { id: req.params.id },
+    });
+
+    res.json({status: 'Oficina alterada com sucesso!', oficinaExcluida: oficina});
 })
 
 module.exports = router
