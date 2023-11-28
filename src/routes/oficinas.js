@@ -34,4 +34,20 @@ router.get('/view/:id', async (req, res) => {
     res.json(oficina)
 })
 
+// Alterar uma oficina pelo id
+router.put("/edit/:id", async (req, res) => {
+    const linhasAtualizadas = await Oficina.update(
+                                    req.body, 
+                                    {where: {id: req.params.id}}
+                                    )
+
+    if (linhasAtualizadas > 0) {
+        oficinaAtualizada = await Oficina.findOne({
+            where: {id: req.params.id}
+        })
+
+        res.json({status: 'Oficina alterada com sucesso!', oficinaAtualizada})
+    }
+})
+
 module.exports = router
