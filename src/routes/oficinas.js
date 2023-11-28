@@ -25,4 +25,13 @@ router.post('/add', async (req, res) => {
     }
 })
 
+// Pesquisar oficina específica pelo id
+router.get('/view/:id', async (req, res) => {
+    const oficina = await Oficina.findOne({
+                        where: {id: req.params.id}
+                    })
+    
+    res.json(oficina)
+})
+
 module.exports = router
