@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Oficina = require("../models/oficina")
+const Oficina = require('../models/oficina')
+const validation = require('../utils/validation')
 
 // Listar todas as oficinas cadastradas
 router.get('/', async (req, res) => {
@@ -15,13 +16,27 @@ router.get('/', async (req, res) => {
 router.post('/add', async (req, res) => {
     try {
         let {nome, descricao, data, local} = req.body
+        
+        // Validar campos
+        if (!validation.validarCampoString(nome)) {
+            return res.status(500).json({error: 'ERRO, nome não pode ser vazio!'})
+        }
+
+        validarData = validation.validarData(data)
+        if (validarData.status === false) {
+            return res.status(500).json({error: validarData.mensagem});
+        }
+
+        if (!validation.validarCampoString(local)) {
+            res.status(500).json({error: 'ERRO, local não pode ser vazio!'})
+        }
 
         const oficina = await Oficina.create({nome, descricao, data, local})
 
         res.status(201).json(oficina)
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'ERRO ao criar oficina.' })
+        res.status(500).json({error: 'ERRO ao criar oficina.'})
     }
 })
 
