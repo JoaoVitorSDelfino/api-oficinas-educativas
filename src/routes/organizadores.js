@@ -1,16 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const Organizador = require("../models/organizador");
-const validation = require('../utils/validation');
+const express = require('express')
+const router = express.Router()
+const Organizador = require("../models/organizador")
+const validation = require('../utils/validation')
 
 // Rota para obter todos os organizadores
 router.get('/', async (req, res) => {
-    const organizadores = await Organizador.findAll();
-    const jsonOrganizadores = JSON.stringify({ lista: organizadores }, null, 2);
+    const organizadores = await Organizador.findAll()
+    const jsonOrganizadores = JSON.stringify({ lista: organizadores }, null, 2)
 
-    res.setHeader('Content-Type', 'application/json');
-    res.end(jsonOrganizadores);
-});
+    res.setHeader('Content-Type', 'application/json')
+    res.end(jsonOrganizadores)
+})
 
 // Rota para adicionar organizador
 router.post('/add', async (req, res) => {
@@ -69,7 +69,7 @@ router.get('/view/:id', async (req, res) => {
             res.status(500).json({error: 'ERRO, organizador não existe!'})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO ao buscar organizador'})
     }
 })
@@ -92,18 +92,18 @@ router.put('/edit/:id', async (req, res) => {
                 },
             })
     
-            // Verifica se organizador que deseja criar já existe
+            // Verifica se organizador que deseja editar já existe
             if (!organizadorExiste) {
                 await Organizador.update(
                     req.body, 
                     {where: {id: req.params.id}}
                 )
 
-                organizadorAtualizada = await Organizador.findOne({
+                organizadorAtualizado = await Organizador.findOne({
                     where: {id: req.params.id}
                 })
 
-                res.json({status: 'Organizador alterado com sucesso!', organizadorAtualizada})
+                res.json({status: 'Organizador alterado com sucesso!', organizadorAtualizado})
             } else {
                 console.log('ERRO, organizador já existe.')
                 res.status(400).json({ error: 'ERRO, organizador já existe.' })
@@ -112,7 +112,7 @@ router.put('/edit/:id', async (req, res) => {
             res.status(500).json({error: 'ERRO, organizador não existe!'})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO ao editar organizador.'})
     }
 })
@@ -122,22 +122,22 @@ router.delete('/delete/:id', async (req, res) => {
     try {
         const organizador = await Organizador.findOne({
             where: { id: req.params.id },
-        });
+        })
 
         // Valida se organizador informado existe
         if (organizador) { 
             await Organizador.destroy({
                 where: { id: req.params.id },
-            });
+            })
         
             res.json({status: 'Organizador deletado com sucesso!', organizadorExcluido: organizador})
         } else {
             res.status(500).json({error: 'ERRO, organizador não existe!'})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO ao deletar organizador.'})
     }
 })
 
-module.exports = router;
+module.exports = router
