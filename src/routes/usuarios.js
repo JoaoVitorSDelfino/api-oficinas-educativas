@@ -85,4 +85,27 @@ router.put('/edit/:id', async (req, res) => {
     }
 })
 
+// Deletar um usuário pelo id
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const usuario = await Usuario.findOne({
+            where: { id: req.params.id },
+        });
+
+        // Valida se usuário informada existe
+        if (usuario) { 
+            await Usuario.destroy({
+                where: { id: req.params.id },
+            });
+        
+            res.json({status: 'Usuário deletado com sucesso!', usuarioExcluido: usuario});
+        } else {
+            res.status(500).json({error: 'ERRO, usuario não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao deletar usuario.'})
+    }
+})
+
 module.exports = router;
