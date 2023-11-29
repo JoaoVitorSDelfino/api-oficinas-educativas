@@ -52,4 +52,37 @@ router.get('/view/:id', async (req, res) => {
     }
 })
 
+// Alterar um usário pelo id
+router.put('/edit/:id', async (req, res) => {
+    try {
+        usuario = await Usuario.findOne({
+            where: {id: req.params.id}
+        })
+
+        // Valida se a usuário informada existe
+        if (usuario) {
+            // Valida se os novos dados são válidos
+            if (validation.validarUsuario(req.body).status) {
+                await usuario.update(
+                    req.body, 
+                    {where: {id: req.params.id}}
+                )
+
+                usuarioAtualizada = await Usuario.findOne({
+                    where: {id: req.params.id}
+                })    
+
+                res.json({status: 'Usuário alterado com sucesso!', usuarioAtualizada})
+            } else {
+                res.status(400).json({error: validation.validarUsuario(req.body).mensagem})
+            }
+        } else {
+            res.status(500).json({error: 'ERRO, usuario não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao editar usuario.'})
+    }
+})
+
 module.exports = router;
