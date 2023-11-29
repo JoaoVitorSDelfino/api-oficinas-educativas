@@ -1,6 +1,5 @@
-function validarCampoString(valor, mensagemErro) {
+function validarCampoString(valor) {
     if (valor == '' || valor == null) {
-        console.error(`ERRO, ${mensagemErro} não pode ser vazio!`)
         return false
     } else {
         return true
@@ -107,19 +106,14 @@ function validarEmail(email) {
     return regexEmail.test(email);
 }
 
-const Organizador = require('../models/organizador')
-
-const validarOrganizador = async (dados) => {
+const validarOrganizador = (dados) => {
     const {idUsuario, idOficina} = dados
 
-    const organizador = await Organizador.findOne({
-        where: {
-          idUsuario,
-          idOficina,
-        },
-    });
+    if (!Number.isInteger(idUsuario) || !Number.isInteger(idOficina)) {
+        return {status: false, mensagem: 'ERRO, id informado deve ser um número inteiro!'}
+    }
 
-    return organizador
+    return {status: true, mensagem: ''}
 }
 
 module.exports = {

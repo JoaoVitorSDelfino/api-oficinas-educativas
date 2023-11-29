@@ -14,17 +14,31 @@ router.get('/', async (req, res) => {
 
 router.post('/add', async (req, res) => {
     try {
-        if (!validation.validarOrganizador(req.body)) {
-            // Adicionar o organizador
-            const organizador = await Organizador.create(req.body)
-  
-            res.status(201).json({
-                mensagem: 'Organizador adicionado com sucesso!',
-                organizador: organizador,
+        if (validation.validarOrganizador(req.body).status) {
+            const {idUsuario, idOficina} = req.body 
+
+            const organizadorExiste = await Organizador.findOne({
+                where: {
+                    idUsuario,
+                    idOficina
+                },
             })
+    
+            if (!organizadorExiste) {
+                // Adicionar o organizador
+                const organizador = await Organizador.create(req.body)
+    
+                res.status(201).json({
+                    mensagem: 'Organizador adicionado com sucesso!',
+                    organizador: organizador,
+                })
+            } else {
+                console.log('ERRO, organizador já existe.')
+                res.status(400).json({ error: 'ERRO, organizador já existe.' })
+            }
         } else {
-            console.log('ERRO, organizador já existe!')
-            res.status(400).json({ error: 'ERRO, organizador já existe!' })
+            console.log(validation.validarOrganizador(req.body).mensagem)
+            res.status(400).json({ error: validation.validarOrganizador(req.body).mensagem })
         }
     } catch (error) {
         if (error.name === 'SequelizeForeignKeyConstraintError') {
@@ -35,6 +49,6 @@ router.post('/add', async (req, res) => {
             res.status(500).json({ error: 'ERRO interno do servidor.' })
           }
     }
-});
+})
 
 module.exports = router;
