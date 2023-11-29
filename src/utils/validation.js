@@ -107,9 +107,32 @@ function validarEmail(email) {
     return regexEmail.test(email);
 }
 
+const Usuario = require('../models/usuario')
+const Oficina = require('../models/oficina')
+
+const validarOrganizador = async (dados) => {
+    const {idUsuario, idOficina} = dados
+
+    const usuario = await Usuario.findOne({
+        where: {id: idUsuario}
+    })
+    const oficina = await Oficina.findOne({
+        where: {id: idOficina}
+    })
+
+    if (!usuario) {
+        return {status: false, mensagem: 'ERRO, usuário não existe!'}
+    }
+
+    if (!oficina) {
+        return {status: false, mensagem: 'ERRO, oficina não existe!'}
+    }
+
+    return {status: true, mensagem: ''}
+}
+
 module.exports = {
-    validarCampoString,
     validarOficina,
-    validarData,
-    validarUsuario
+    validarUsuario,
+    validarOrganizador
 }

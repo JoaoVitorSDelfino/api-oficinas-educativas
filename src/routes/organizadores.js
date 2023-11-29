@@ -12,4 +12,22 @@ router.get('/', async (req, res) => {
     res.end(jsonOrganizadores);
 });
 
+router.post('/add', async (req, res) => {
+    try {
+        // Adicionar o organizador
+        const novoOrganizador = await Organizador.create(req.body);
+  
+        res.status(201).json({
+            mensagem: 'Organizador adicionado com sucesso!',
+            organizador: novoOrganizador,
+        });
+    } catch (error) {
+        if (error.name === 'SequelizeForeignKeyConstraintError') {
+            res.status(400).json({ error: 'ERRO, usuário ou oficina não existe!' })
+          } else {
+            res.status(500).json({ error: 'ERRO interno do servidor.' })
+          }
+    }
+});
+
 module.exports = router;

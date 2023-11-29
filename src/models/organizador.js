@@ -11,14 +11,6 @@ const Organizador = db.define('organizadores', {
         unique: true, 
         autoIncrement: true,
     },
-    nomeUsuario: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    nomeOficina: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
 })
 
 Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario' })
