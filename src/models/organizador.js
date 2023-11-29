@@ -11,14 +11,6 @@ const Organizador = db.define('organizadores', {
         unique: true, 
         autoIncrement: true,
     },
-    idUsuario: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-    idOficina: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
     nomeUsuario: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -29,10 +21,6 @@ const Organizador = db.define('organizadores', {
     },
 })
 
-// Definindo 'pertence a'
-Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario', allowNull: false });
-Organizador.belongsTo(Usuario, { foreignKey: 'nomeUsuario', allowNull: false });
-Organizador.belongsTo(Oficina, { foreignKey: 'idOficina', allowNull: false });
-Organizador.belongsTo(Oficina, { foreignKey: 'nomeOficina', allowNull: false });
+Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario' })
 
 module.exports = Organizador

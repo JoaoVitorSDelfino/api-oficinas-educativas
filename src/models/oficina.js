@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db/connection')
+const Participante = require('./participante')
+const Organizador = require('./organizador')
 
 const Oficina = db.define('oficina', {
     id: {
@@ -25,5 +27,8 @@ const Oficina = db.define('oficina', {
         allowNull: false,
     },
 })
+
+Oficina.hasMany(Participante, { foreignKey: 'idOficina' })
+Oficina.hasMany(Organizador, { foreignKey: 'idOficina' })
 
 module.exports = Oficina

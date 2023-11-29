@@ -19,18 +19,8 @@ const Participante = db.define('participante', {
         type: Sequelize.REAL,
         allowNull: false,
     },
-    idUsuario: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-    idOficina: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
 })
 
-// Definindo 'pertence a'
-Participante.belongsTo(Oficina, { foreignKey: 'idOficina', allowNull: false })
-Participante.belongsTo(Usuario, { foreignKey: 'idUsuario', allowNull: false })
+Participante.belongsTo(Usuario, { foreignKey: 'idUsuario' })
 
 module.exports = Participante
