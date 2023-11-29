@@ -33,4 +33,23 @@ router.post('/add', async (req, res) => {
     }
 })
 
+// Pesquisar usuário específico pelo id
+router.get('/view/:id', async (req, res) => {
+    try {
+        const usuario = await Usuario.findOne({
+            where: {id: req.params.id}
+        })
+
+        // Valida se usuário foi encontrado
+        if (usuario) {
+            res.json(usuario)
+        } else {
+            res.status(500).json({error: 'ERRO, usuario não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao buscar usuário'})
+    }
+})
+
 module.exports = router;
