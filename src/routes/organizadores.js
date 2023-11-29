@@ -99,11 +99,11 @@ router.put('/edit/:id', async (req, res) => {
                     {where: {id: req.params.id}}
                 )
 
-                organizadorAtualizada = await Oficina.findOne({
+                organizadorAtualizada = await Organizador.findOne({
                     where: {id: req.params.id}
                 })
 
-                res.json({status: 'Oficina alterada com sucesso!', organizadorAtualizada})
+                res.json({status: 'Organizador alterado com sucesso!', organizadorAtualizada})
             } else {
                 console.log('ERRO, organizador já existe.')
                 res.status(400).json({ error: 'ERRO, organizador já existe.' })
@@ -113,7 +113,30 @@ router.put('/edit/:id', async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(400).json({error: 'ERRO ao editar oficina.'})
+        res.status(400).json({error: 'ERRO ao editar organizador.'})
+    }
+})
+
+// Deletar um organizador pelo id
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const organizador = await Organizador.findOne({
+            where: { id: req.params.id },
+        });
+
+        // Valida se organizador informado existe
+        if (organizador) { 
+            await Organizador.destroy({
+                where: { id: req.params.id },
+            });
+        
+            res.json({status: 'Organizador deletado com sucesso!', organizadorExcluido: organizador})
+        } else {
+            res.status(500).json({error: 'ERRO, organizador não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao deletar organizador.'})
     }
 })
 
