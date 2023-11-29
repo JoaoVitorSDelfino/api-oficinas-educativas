@@ -3,7 +3,7 @@ const db = require('../db/connection')
 const Oficina = require('./oficina')
 const Usuario = require('./usuario')
 
-const Organizador = db.define('organizador', {
+const Organizador = db.define('organizadores', {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false, 
