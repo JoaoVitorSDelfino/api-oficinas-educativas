@@ -1,11 +1,18 @@
-const validarCampoString = (valor, mensagemErro) => {
+function validarCampoString(valor, mensagemErro) {
     if (valor == '' || valor == null) {
         console.error(`ERRO, ${mensagemErro} não pode ser vazio!`)
         return false
     } else {
         return true
     }
-};
+}
+
+function normalizarString(str) {
+    return str
+        .toLowerCase()                      // Converter para minúsculas
+        .normalize('NFD')                   // Normalizar para decompor acentos e caracteres especiais
+        .replace(/[\u0300-\u036f]/g, '');   // Remover caracteres acentuados
+}
 
 const validarOficina = (dados) => {
     let {nome, descricao, data, local} = dados
@@ -53,8 +60,58 @@ const validarData = (data) => {
     return {status: true, mensagem: ''}
 };
 
+const validarUsuario = (dados) => {
+    let {funcao, nome, senha, email} = dados
+        
+    // Validar campos
+    if (!validarCampoString(funcao)) {
+        return {status: false, mensagem: 'ERRO, função não pode ser vazia!'}
+            // funcao != 'Coordenador' || funcao != 'Professor' | funcao != 'Aluno'
+    } else  if (!validarFuncao(funcao)){
+        return {status: false, mensagem: 'ERRO, função digitada é inválida! Tente Coordenador, Professor ou Aluno'}
+    }
+
+    if (!validarCampoString(nome)) {
+        return {status: false, mensagem: 'ERRO, nome não pode ser vazio!'}
+    }
+
+    if (!validarCampoString(senha)) {
+        return {status: false, mensagem: 'ERRO, senha não pode ser vazia!'}
+    } else if (senha.length < 8) {
+        return {status: false, mensagem: 'ERRO, senha precisa ser maior!'}
+    } else if (senha.length > 20){
+        return {status: false, mensagem: 'ERRO, senha precisa ser menor!'}
+    }
+
+    if (!validarEmail(email)) {
+        return {status: false, mensagem: 'ERRO, email precisa conter um @!'}
+    }
+
+    return {status: true, mensagem: ''}
+}
+
+function validarFuncao (funcao) {
+    const funcaoNormalizada = normalizarString(funcao);
+
+    const funcoesValidas = ["coordenador", "professor", "aluno"];
+
+    // Verificar se o cargo fornecido está na lista de cargos válidos
+    if (funcoesValidas.includes(funcaoNormalizada)) {
+        return true;
+    }
+
+    return false;
+}
+
+function validarEmail(email) {
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return regexEmail.test(email);
+}
+
 module.exports = {
     validarCampoString,
     validarOficina,
-    validarData
+    validarData,
+    validarUsuario
 }

@@ -15,9 +15,14 @@ router.get('/', async (req, res) => {
 // Adicionar novo usuário
 router.post('/add', async (req, res) => {
     try {
-        const usuario = await Usuario.create(req.body)
+        // Valida os dados recebidos
+        if (validation.validarUsuario(req.body).status) {
+            const usuario = await Usuario.create(req.body)
 
-        res.status(201).json(usuario)
+            res.status(201).json(usuario)
+        } else {
+            res.status(400).json({error: validation.validarUsuario(req.body).mensagem})
+        }
     } catch (error) {
         console.error(error);
         res.status(400).json({error: 'ERRO ao criar usuario.'})
