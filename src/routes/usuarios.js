@@ -12,4 +12,16 @@ router.get('/', async (req, res) => {
     res.end(jsonUsuarios);
 })
 
+// Adicionar novo usuário
+router.post('/add', async (req, res) => {
+    try {
+        const usuario = await Usuario.create(req.body)
+
+        res.status(201).json(usuario)
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao criar usuario.'})
+    }
+})
+
 module.exports = router;
