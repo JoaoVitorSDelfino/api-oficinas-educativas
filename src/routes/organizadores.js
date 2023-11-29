@@ -12,8 +12,10 @@ router.get('/', async (req, res) => {
     res.end(jsonOrganizadores);
 });
 
+// Rota para adicionar organizador
 router.post('/add', async (req, res) => {
     try {
+        // Valida se valores digitados são válidos
         if (validation.validarOrganizador(req.body).status) {
             const {idUsuario, idOficina} = req.body 
 
@@ -24,6 +26,7 @@ router.post('/add', async (req, res) => {
                 },
             })
     
+            // Verifica se organizador que deseja criar já exist
             if (!organizadorExiste) {
                 // Adicionar o organizador
                 const organizador = await Organizador.create(req.body)
@@ -41,6 +44,7 @@ router.post('/add', async (req, res) => {
             res.status(400).json({ error: validation.validarOrganizador(req.body).mensagem })
         }
     } catch (error) {
+        // Caso algum id informado não exista
         if (error.name === 'SequelizeForeignKeyConstraintError') {
             console.log('ERRO, usuário ou oficina não existe!')
             res.status(400).json({ error: 'ERRO, usuário ou oficina não existe!' })
@@ -48,6 +52,25 @@ router.post('/add', async (req, res) => {
             console.log('ERRO interno do servidor.')
             res.status(500).json({ error: 'ERRO interno do servidor.' })
           }
+    }
+})
+
+// Pesquisar organizador específico pelo id
+router.get('/view/:id', async (req, res) => {
+    try {
+        const organizador = await Organizador.findOne({
+            where: {id: req.params.id}
+        })
+
+        // Valida se organizador foi encontrado
+        if (organizador) {
+            res.json(organizador)
+        } else {
+            res.status(500).json({error: 'ERRO, organizador não existe!'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO ao buscar organizador'})
     }
 })
 
