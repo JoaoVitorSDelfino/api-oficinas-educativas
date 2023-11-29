@@ -67,8 +67,8 @@ const validarUsuario = (dados) => {
     if (!validarCampoString(funcao)) {
         return {status: false, mensagem: 'ERRO, função não pode ser vazia!'}
             // funcao != 'Coordenador' || funcao != 'Professor' | funcao != 'Aluno'
-    } else  if (!validarFuncao(funcao)){
-        return {status: false, mensagem: 'ERRO, função digitada é inválida! Tente Coordenador, Professor ou Aluno'}
+    } else if (!validarFuncao(funcao)) {
+        return {status: false, mensagem: 'ERRO, função digitada é inválida! Tente coordenador, professor ou aluno'}
     }
 
     if (!validarCampoString(nome)) {
@@ -90,17 +90,15 @@ const validarUsuario = (dados) => {
     return {status: true, mensagem: ''}
 }
 
-function validarFuncao (funcao) {
-    const funcaoNormalizada = normalizarString(funcao);
-
-    const funcoesValidas = ["coordenador", "professor", "aluno"];
+function validarFuncao(funcao) {
+    const funcoesValidas = ['coordenador', 'professor', 'aluno']
 
     // Verificar se o cargo fornecido está na lista de cargos válidos
-    if (funcoesValidas.includes(funcaoNormalizada)) {
-        return true;
+    if (funcoesValidas.includes(normalizarString(funcao))) {
+        return true
     }
 
-    return false;
+    return false
 }
 
 function validarEmail(email) {

@@ -17,7 +17,11 @@ router.post('/add', async (req, res) => {
     try {
         // Valida os dados recebidos
         if (validation.validarUsuario(req.body).status) {
-            const usuario = await Usuario.create(req.body)
+            let {funcao, nome, senha, email} = req.body;
+            // Padroniza funcao para ser minúsculo
+            funcao = funcao.toLowerCase()
+
+            const usuario = await Usuario.create({funcao, nome, senha, email});
 
             res.status(201).json(usuario)
         } else {
