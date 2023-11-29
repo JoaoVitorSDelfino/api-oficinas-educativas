@@ -19,10 +19,20 @@ const Organizador = db.define('organizadores', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    nomeUsuario: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    nomeOficina: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
 })
 
 // Definindo 'pertence a'
-Organizador.belongsTo(Oficina, { foreignKey: 'idOficina', allowNull: false });
 Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario', allowNull: false });
+Organizador.belongsTo(Usuario, { foreignKey: 'nomeUsuario', allowNull: false });
+Organizador.belongsTo(Oficina, { foreignKey: 'idOficina', allowNull: false });
+Organizador.belongsTo(Oficina, { foreignKey: 'nomeOficina', allowNull: false });
 
 module.exports = Organizador
