@@ -121,4 +121,27 @@ router.put('/edit/:id', async (req, res) => {
     }
 })
 
+// Deletar um participante pelo id
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const participante = await Participante.findOne({
+            where: { id: req.params.id },
+        })
+
+        // Valida se participante informado existe
+        if (participante) { 
+            await Participante.destroy({
+                where: { id: req.params.id },
+            })
+        
+            res.json({status: 'Participante deletado com sucesso!', participanteExcluido: participante})
+        } else {
+            res.status(500).json({error: 'ERRO, participante não existe!'})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({error: 'ERRO ao deletar participante.'})
+    }
+})
+
 module.exports = router
