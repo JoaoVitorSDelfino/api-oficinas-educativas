@@ -1,4 +1,4 @@
-function validarCampoString(valor) {
+function validarCampo(valor) {
     if (valor == '' || valor == null) {
         return false
     } else {
@@ -17,7 +17,7 @@ const validarOficina = (dados) => {
     let {nome, descricao, data, local} = dados
         
     // Validar campos
-    if (!validarCampoString(nome)) {
+    if (!validarCampo(nome)) {
         return {status: false, mensagem: 'ERRO, nome não pode ser vazio!'}
     }
 
@@ -25,7 +25,7 @@ const validarOficina = (dados) => {
         return {status: false, mensagem: validarData(data).mensagem}
     }
 
-    if (!validarCampoString(local)) {
+    if (!validarCampo(local)) {
         return {status: false, mensagem: 'ERRO, local não pode ser vazio!'}
     }
 
@@ -63,18 +63,18 @@ const validarUsuario = (dados) => {
     let {funcao, nome, senha, email} = dados
         
     // Validar campos
-    if (!validarCampoString(funcao)) {
+    if (!validarCampo(funcao)) {
         return {status: false, mensagem: 'ERRO, função não pode ser vazia!'}
             // funcao != 'Coordenador' || funcao != 'Professor' | funcao != 'Aluno'
     } else if (!validarFuncao(funcao)) {
         return {status: false, mensagem: 'ERRO, função digitada é inválida! Tente coordenador, professor ou aluno'}
     }
 
-    if (!validarCampoString(nome)) {
+    if (!validarCampo(nome)) {
         return {status: false, mensagem: 'ERRO, nome não pode ser vazio!'}
     }
 
-    if (!validarCampoString(senha)) {
+    if (!validarCampo(senha)) {
         return {status: false, mensagem: 'ERRO, senha não pode ser vazia!'}
     } else if (senha.length < 8) {
         return {status: false, mensagem: 'ERRO, senha precisa ser maior!'}
@@ -109,7 +109,9 @@ function validarEmail(email) {
 const validarOrganizador = (dados) => {
     const {idUsuario, idOficina} = dados
 
-    if (!Number.isInteger(idUsuario) || !Number.isInteger(idOficina)) {
+    if (!validarCampo(idUsuario) || !validarCampo(idUsuario)) {
+        return {status: false, mensagem: 'ERRO, id não pode ser nulo!'}
+    } else if (!Number.isInteger(idUsuario) || !Number.isInteger(idOficina)) {
         return {status: false, mensagem: 'ERRO, id informado deve ser um número inteiro!'}
     }
 
@@ -119,15 +121,21 @@ const validarOrganizador = (dados) => {
 const validarParticipante = (dados) => {
     const {idUsuario, idOficina, presente, nota} = dados
 
-    if (!Number.isInteger(idUsuario) || !Number.isInteger(idOficina)) {
+    if (!validarCampo(idUsuario) || !validarCampo(idUsuario)) {
+        return {status: false, mensagem: 'ERRO, id não pode ser nulo!'}
+    } else if (!Number.isInteger(idUsuario) || !Number.isInteger(idOficina)) {
         return {status: false, mensagem: 'ERRO, id informado deve ser um número inteiro!'}
     } 
 
-    if (presente !== 1 && presente !== 0 || !Number.isInteger(presente)) {
+    if (!validarCampo(presente)) {
+        return {status: false, mensagem: 'ERRO, campo presente não pode ser nulo!'}
+    } else if (presente !== 1 && presente !== 0 || !Number.isInteger(presente)) {
         return {status: false, mensagem: 'ERRO, campo presente deve ser 0 (para ausente) e 1 (para presente)!'}
     }
 
-    if (isNaN(nota)) {
+    if (!validarCampo(nota)) {
+        return {status: false, mensagem: 'ERRO, campo nota não pode ser nulo!'}
+    } else if (isNaN(nota)) {
         return {status: false, mensagem: 'ERRO, nota deve ser um número!'}
     } else if (nota < 0) {
         return {status: false, mensagem: 'ERRO, nota não pode ser negativa! São aceitos apenas valores de 0 até 10.'}
