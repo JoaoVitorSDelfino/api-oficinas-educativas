@@ -26,7 +26,7 @@ router.post('/add', async (req, res) => {
                 },
             })
     
-            // Verifica se organizador que deseja criar já exist
+            // Verifica se organizador que deseja criar já existe
             if (!organizadorExiste) {
                 // Adicionar o organizador
                 const organizador = await Organizador.create(req.body)
