@@ -55,4 +55,23 @@ router.post('/add', async (req, res) => {
     }
 })
 
+// Pesquisar participante específico pelo id
+router.get('/view/:id', async (req, res) => {
+    try {
+        const participante = await Participante.findOne({
+            where: {id: req.params.id}
+        })
+
+        // Valida se participante foi encontrado
+        if (participante) {
+            res.json(participante)
+        } else {
+            res.status(500).json({error: 'ERRO, participante não existe!'})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({error: 'ERRO ao buscar participante'})
+    }
+})
+
 module.exports = router
