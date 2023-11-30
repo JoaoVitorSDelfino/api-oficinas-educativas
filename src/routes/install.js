@@ -10,6 +10,11 @@ const Participante = require("../models/participante")
 
 router.get('/', async (req, res) => {
     try {
+        await Oficina.sync({ force: true })
+        await Usuario.sync({ force: true })
+        await Organizador.sync({ force: true })
+        await Participante.sync({ force: true })
+
         for (let i = 0; i < dados.oficinas.length; i++) {
             Oficina.create(dados.oficinas[i])
         }

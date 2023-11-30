@@ -130,7 +130,7 @@ const organizadores = [
 
     {
         idUsuario: 8,
-        idOficina: 7
+        idOficina: 4
     },
 ]
 
@@ -166,7 +166,7 @@ const participantes = [
     {
         presente: 0,
         nota: 0.0,
-        idUsuario: 11,
+        idUsuario: 10,
         idOficina: 5
     },
 ]
