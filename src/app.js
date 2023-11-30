@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/install', require("./routes/install"))
+app.use('/drop-data', require('./routes/drop-data'))
 
 app.use('/oficinas', require('./routes/oficinas'))
 app.use('/usuarios', require('./routes/usuarios'))
