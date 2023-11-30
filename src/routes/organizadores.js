@@ -3,13 +3,27 @@ const router = express.Router()
 const Organizador = require("../models/organizador")
 const validation = require('../utils/validation')
 
-// Rota para obter todos os organizadores
-router.get('/', async (req, res) => {
-    const organizadores = await Organizador.findAll()
-    const jsonOrganizadores = JSON.stringify({ lista: organizadores }, null, 2)
+// Rota para obter lista de organizadores
+router.get('/list/:limite/:pagina', async (req, res) => {
+    try {
+        let {limite, pagina} = req.params
 
-    res.setHeader('Content-Type', 'application/json')
-    res.end(jsonOrganizadores)
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validation.validarBuscaLista(limite, pagina).status) {
+            const organizadores = await Organizador.findAll({offset: pagina, limit: limite})
+            const jsonOrganizadores = JSON.stringify({lista: organizadores}, null, 2)
+    
+            res.setHeader('Content-Type', 'application/json')
+            res.end(jsonOrganizadores)
+        } else {
+            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO buscar lista de organizadores'})
+    }
 })
 
 // Rota para adicionar organizador

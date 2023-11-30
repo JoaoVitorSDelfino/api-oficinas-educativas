@@ -13,6 +13,22 @@ function normalizarString(str) {
         .replace(/[\u0300-\u036f]/g, '');   // Remover caracteres acentuados
 }
 
+const validarBuscaLista = (limite, pagina) => {
+    const valoresLimite = [5, 10, 30]
+
+    if (!valoresLimite.includes(limite)) {
+        return {status: false, mensagem: 'ERRO, primeiro parametro (limite) deve ser um numero (inteiro) equivalente a 5, 10 ou 30!'}
+    }
+
+    if (pagina < 0) {
+        return {status: false, mensagem: 'ERRO, segundo parametro (página) deve ser positivo e diferente de 0!'}
+    } else if (!Number.isInteger(pagina)) {
+        return {status: false, mensagem: 'ERRO, primeiro parametro (página) deve ser um numero inteiro!'}
+    }
+
+    return {status: true, mensagem: ''}
+}
+
 const validarOficina = (dados) => {
     let {nome, descricao, data, local} = dados
         
@@ -147,6 +163,7 @@ const validarParticipante = (dados) => {
 }
 
 module.exports = {
+    validarBuscaLista,
     validarOficina,
     validarUsuario,
     validarOrganizador,

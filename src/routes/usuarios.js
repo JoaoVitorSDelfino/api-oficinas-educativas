@@ -3,13 +3,27 @@ const router = express.Router();
 const Usuario = require("../models/usuario");
 const validation = require('../utils/validation')
 
-// Listar todos os usuários cadastrados
-router.get('/', async (req, res) => {
-    const usuarios = await Usuario.findAll();
-    const jsonUsuarios = JSON.stringify({ lista: usuarios }, null, 2);
+// Rota para obter lista de usuários
+router.get('/list/:limite/:pagina', async (req, res) => {
+    try {
+        let {limite, pagina} = req.params
 
-    res.setHeader('Content-Type', 'application/json');
-    res.end(jsonUsuarios);
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validation.validarBuscaLista(limite, pagina).status) {
+            const usuarios = await Usuario.findAll({offset: pagina, limit: limite})
+            const jsonUsuarios = JSON.stringify({lista: usuarios}, null, 2)
+    
+            res.setHeader('Content-Type', 'application/json')
+            res.end(jsonUsuarios)
+        } else {
+            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO buscar lista de usuarios'})
+    }
 })
 
 // Adicionar novo usuário

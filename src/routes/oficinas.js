@@ -3,13 +3,27 @@ const router = express.Router()
 const Oficina = require('../models/oficina')
 const validation = require('../utils/validation')
 
-// Listar todas as oficinas cadastradas
-router.get('/', async (req, res) => {
-    const oficinas = await Oficina.findAll();
-    const jsonOficinas = JSON.stringify({ lista: oficinas }, null, 2);
+// Listar lista de oficinas cadastradas
+router.get('/list/:limite/:pagina', async (req, res) => {
+    try {
+        let {limite, pagina} = req.params
 
-    res.setHeader('Content-Type', 'application/json');
-    res.end(jsonOficinas);
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validation.validarBuscaLista(limite, pagina).status) {
+            const oficinas = await Oficina.findAll({offset: pagina, limit: limite})
+            const jsonOficinas = JSON.stringify({lista: oficinas}, null, 2)
+    
+            res.setHeader('Content-Type', 'application/json')
+            res.end(jsonOficinas)
+        } else {
+            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO buscar lista de oficinas'})
+    }
 })
 
 // Adicionar nova oficina

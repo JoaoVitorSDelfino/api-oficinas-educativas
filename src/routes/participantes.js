@@ -3,13 +3,27 @@ const router = express.Router()
 const Participante = require("../models/participante")
 const validation = require('../utils/validation')
 
-// Rota para obter todos os participantes
-router.get('/', async (req, res) => {
-    const participantes = await Participante.findAll()
-    const jsonParticipantes = JSON.stringify({ lista: participantes }, null, 2)
+// Rota para obter lista de participantes
+router.get('/list/:limite/:pagina', async (req, res) => {
+    try {
+        let {limite, pagina} = req.params
 
-    res.setHeader('Content-Type', 'application/json')
-    res.end(jsonParticipantes)
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validation.validarBuscaLista(limite, pagina).status) {
+            const participantes = await Participante.findAll({offset: pagina, limit: limite})
+            const jsonParticipantes = JSON.stringify({lista: participantes}, null, 2)
+    
+            res.setHeader('Content-Type', 'application/json')
+            res.end(jsonParticipantes)
+        } else {
+            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({error: 'ERRO buscar lista de participantes'})
+    }
 })
 
 // Rota para adicionar participante
