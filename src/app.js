@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
     res.send('teste')
 });
 
+app.use('/install', require("./routes/install"))
+
 app.use('/oficinas', require('./routes/oficinas'))
 app.use('/usuarios', require('./routes/usuarios'))
 app.use('/organizadores', require('./routes/organizadores'))
