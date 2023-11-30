@@ -74,4 +74,51 @@ router.get('/view/:id', async (req, res) => {
     }
 })
 
+// Alterar um participante pelo id
+router.put('/edit/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        
+        participante = await Participante.findOne({
+            where: {id: id}
+        })
+
+        // Valida se valores digitados são válidos
+        if (validation.validarParticipante(req.body).status) {
+            const {idUsuario, idOficina} = req.body 
+
+            const participanteExiste = await Participante.findOne({
+                where: {
+                    idUsuario,
+                    idOficina
+                },
+            })
+    
+            // Verifica se participante que deseja editar já existe
+            // Se o participante a ser editado já existe, mas possui
+            // mesmo id que o parâmetro, então o participante pode ser editado
+            if (!participanteExiste || (participanteExiste && participanteExiste.id == id)) {
+                await Participante.update(
+                    req.body, 
+                    {where: {id: id}}
+                )
+
+                participanteAtualizado = await Participante.findOne({
+                    where: {id: id}
+                })
+
+                res.json({status: 'Participante alterado com sucesso!', participanteAtualizado})
+            } else {
+                console.log('ERRO, participante já existe.')
+                res.status(400).json({ error: 'ERRO, participante já existe.' })
+            }
+        } else {
+            res.status(500).json({error: validation.validarParticipante(req.body).mensagem})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({error: 'ERRO ao editar participante.'})
+    }
+})
+
 module.exports = router
