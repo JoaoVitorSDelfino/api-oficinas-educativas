@@ -1,6 +1,5 @@
 const express = require("express")
 const app = express()
-const jwt = require("jsonwebtoken")
 
 // Body parser
 const bodyParser = require('body-parser')
@@ -20,6 +19,7 @@ app.get('/', (req, res) => {
     res.send('teste')
 });
 
+app.use('/login', require('./routes/authentication/login'))
 app.use('/install', require("./routes/install"))
 app.use('/drop-data', require('./routes/drop-data'))
 
