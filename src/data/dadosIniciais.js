@@ -37,71 +37,71 @@ const oficinas = [
 
 const usuarios = [
     {
-        nome: "José Matias",
         funcao: "professor",
+        nome: "José Matias",
         senha: "kDiabsydV!2018h8",
         email: "josematias@gmail.com"
     },
 
-    {
-        nome: "Vanessa Five",
+    {   
         funcao: "coordenador",
+        nome: "Vanessa Five",
         senha: "fnaf1987",
         email: "vanny@gmail.com"
     },
 
     {
-        nome: "Zhong Xhina",
         funcao: "aluno",
+        nome: "Zhong Xhina",
         senha: "ccpnumber1",
         email: "bingqiling@gmail.com"
     },
 
     {
-        nome: "Roger Dourado",
         funcao: "aluno",
+        nome: "Roger Dourado",
         senha: "1pieceisREAL",
         email: "roger@gmail.com"
     },
 
     {
-        nome: "William Indali",
         funcao: "professor",
+        nome: "William Indali",
         senha: "hurheruqyd8v1",
         email: "bowil@gmail.com"
     },
 
     {
-        nome: "Doinb Dawei",
         funcao: "aluno",
+        nome: "Doinb Dawei",
         senha: "3000farm20minhack",
         email: "ryzedawei@gmail.com"
     },
 
     {
-        nome: "Rodrigo Fallen",
         funcao: "professor",
+        nome: "Rodrigo Fallen",
         senha: "presenteota2019",
         email: "rodrigofallen@gmail.com"
     },
 
     {
-        nome: "Margaret Lancaster",
         funcao: "professor",
+        nome: "Margaret Lancaster",
         senha: "132udvt172vcT",
         email: "margaretlancaster@gmail.com"
     },
 
     {
-        nome: "Ronaldo Torres",
         funcao: "aluno",
+        nome: "Ronaldo Torres",
         senha: "dqw87d5cv",
         email: "ronaldo@gmail.com"
     },
 
     {
-        nome: "Daniel Matos",
         funcao: "aluno",
+        nome: "Daniel Matos",
         senha: "13dbn78q6wctv",
         email: "danielmatos@gmail.com"
     },
