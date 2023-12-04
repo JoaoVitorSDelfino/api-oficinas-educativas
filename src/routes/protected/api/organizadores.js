@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Organizador = require("../models/organizador")
-const validation = require('../utils/validation')
+const Organizador = require("../../../models/organizador")
+const validation = require('../../../utils/validation')
 
 // Rota para obter lista de organizadores
 router.get('/list/:limite/:pagina', async (req, res) => {

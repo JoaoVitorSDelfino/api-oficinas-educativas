@@ -19,16 +19,10 @@ app.get('/', (req, res) => {
     res.send('teste')
 });
 
-app.use('/', require('./routes/authentication/login'))
-app.use('/install', require("./routes/install"))
-app.use('/drop-data', require('./routes/drop-data'))
-
-app.use('/oficinas', require('./routes/oficinas'))
-app.use('/usuarios', require('./routes/usuarios'))
-app.use('/organizadores', require('./routes/organizadores'))
-app.use('/participantes', require('./routes/participantes'))
-
 let port = 3000
+
+app.use('/', require('./routes/protected/protected'))
+app.use('/', require('./routes/login'))
 
 app.listen(port, function() {
     console.log('Server is running at port ' + port)

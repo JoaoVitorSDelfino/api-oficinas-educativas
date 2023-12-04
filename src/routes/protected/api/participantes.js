@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Participante = require("../models/participante")
-const validation = require('../utils/validation')
+const Participante = require("../../../models/participante")
+const validation = require('../../../utils/validation')
 
 // Rota para obter lista de participantes
 router.get('/list/:limite/:pagina', async (req, res) => {

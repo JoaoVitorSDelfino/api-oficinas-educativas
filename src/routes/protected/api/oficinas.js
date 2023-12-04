@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Oficina = require('../models/oficina')
-const validation = require('../utils/validation')
+const Oficina = require('../../../models/oficina')
+const validation = require('../../../utils/validation')
 
 // Listar lista de oficinas cadastradas
 router.get('/list/:limite/:pagina', async (req, res) => {

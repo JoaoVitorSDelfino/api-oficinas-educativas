@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const Oficina = require('../models/oficina')
-const Usuario = require('../models/usuario')
-const Organizador = require("../models/organizador")
-const Participante = require("../models/participante")
+const Oficina = require('../../models/oficina')
+const Usuario = require('../../models/usuario')
+const Organizador = require("../../models/organizador")
+const Participante = require("../../models/participante")
 
-router.delete('/', async (req, res) => {
+router.delete('/drop-data', async (req, res) => {
     try {
         await Organizador.destroy({ where: {}})
         await Participante.destroy({ where: {}})
