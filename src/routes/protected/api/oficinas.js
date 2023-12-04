@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Oficina = require('../../../models/oficina')
-const validation = require('../../../utils/validation')
+
+const validation = require('../../../controller/controller')
+const validarOficina = require('../../../controller/oficinaController')
 
 // Listar lista de oficinas cadastradas
 router.get('/list/:limite/:pagina', async (req, res) => {
@@ -30,12 +32,12 @@ router.get('/list/:limite/:pagina', async (req, res) => {
 router.post('/add', async (req, res) => {
     try {
         // Valida os dados recebidos
-        if (validation.validarOficina(req.body).status) {
+        if (validarOficina(req.body).status) {
             const oficina = await Oficina.create(req.body)
 
             res.status(201).json(oficina)
         } else {
-            res.status(400).json({error: validation.validarOficina(req.body).mensagem})
+            res.status(400).json({error: validarOficina(req.body).mensagem})
         }
     } catch (error) {
         console.error(error);
@@ -72,7 +74,7 @@ router.put('/edit/:id', async (req, res) => {
         // Valida se a oficina informada existe
         if (oficina) {
             // Valida se os novos dados são válidos
-            if (validation.validarOficina(req.body).status) {
+            if (validarOficina(req.body).status) {
                 await Oficina.update(
                     req.body, 
                     {where: {id: req.params.id}}
@@ -84,7 +86,7 @@ router.put('/edit/:id', async (req, res) => {
 
                 res.json({status: 'Oficina alterada com sucesso!', oficinaAtualizada})
             } else {
-                res.status(400).json({error: validation.validarOficina(req.body).mensagem})
+                res.status(400).json({error: validarOficina(req.body).mensagem})
             }
         } else {
             res.status(500).json({error: 'ERRO, oficina não existe!'})

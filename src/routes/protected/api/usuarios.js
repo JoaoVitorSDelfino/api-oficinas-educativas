@@ -1,7 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const Usuario = require("../../../models/usuario");
-const validation = require('../../../utils/validation')
+const express = require('express')
+const router = express.Router()
+const Usuario = require("../../../models/usuario")
+
+const validation = require('../../../controller/controller')
+const validarUsuario = require('../../../controller/usuarioController')
 
 // Rota para obter lista de usuários
 router.get('/list/:limite/:pagina', async (req, res) => {
@@ -30,7 +32,7 @@ router.get('/list/:limite/:pagina', async (req, res) => {
 router.post('/add', async (req, res) => {
     try {
         // Valida os dados recebidos
-        if (validation.validarUsuario(req.body).status) {
+        if (validarUsuario(req.body).status) {
             let {funcao, nome, senha, email} = req.body;
             // Padroniza funcao para ser minúsculo
             funcao = funcao.toLowerCase()
@@ -39,7 +41,7 @@ router.post('/add', async (req, res) => {
 
             res.status(201).json(usuario)
         } else {
-            res.status(400).json({error: validation.validarUsuario(req.body).mensagem})
+            res.status(400).json({error: validarUsuario(req.body).mensagem})
         }
     } catch (error) {
         console.error(error);
@@ -76,7 +78,7 @@ router.put('/edit/:id', async (req, res) => {
         // Valida se a usuário informada existe
         if (usuario) {
             // Valida se os novos dados são válidos
-            if (validation.validarUsuario(req.body).status) {
+            if (validarUsuario(req.body).status) {
                 await usuario.update(
                     req.body, 
                     {where: {id: req.params.id}}
@@ -88,7 +90,7 @@ router.put('/edit/:id', async (req, res) => {
 
                 res.json({status: 'Usuário alterado com sucesso!', usuarioAtualizada})
             } else {
-                res.status(400).json({error: validation.validarUsuario(req.body).mensagem})
+                res.status(400).json({error: validarUsuario(req.body).mensagem})
             }
         } else {
             res.status(500).json({error: 'ERRO, usuario não existe!'})

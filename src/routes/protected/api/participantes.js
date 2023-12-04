@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Participante = require("../../../models/participante")
-const validation = require('../../../utils/validation')
+
+const validation = require('../../../controller/controller')
+const validarParticipante = require('../../../controller/participanteController')
 
 // Rota para obter lista de participantes
 router.get('/list/:limite/:pagina', async (req, res) => {
@@ -30,7 +32,7 @@ router.get('/list/:limite/:pagina', async (req, res) => {
 router.post('/add', async (req, res) => {
     try {
         // Valida se valores digitados são válidos
-        if (validation.validarParticipante(req.body).status) {
+        if (validarParticipante(req.body).status) {
             const {idUsuario, idOficina, presente, nota} = req.body 
 
             const participanteExiste = await Participante.findOne({
@@ -54,8 +56,8 @@ router.post('/add', async (req, res) => {
                 res.status(400).json({ error: 'ERRO, participante já existe.' })
             }
         } else {
-            console.log(validation.validarParticipante(req.body).mensagem)
-            res.status(400).json({ error: validation.validarParticipante(req.body).mensagem })
+            console.log(validarParticipante(req.body).mensagem)
+            res.status(400).json({ error: validarParticipante(req.body).mensagem })
         }
     } catch (error) {
         // Caso algum id informado não exista
@@ -98,7 +100,7 @@ router.put('/edit/:id', async (req, res) => {
         })
 
         // Valida se valores digitados são válidos
-        if (validation.validarParticipante(req.body).status) {
+        if (validarParticipante(req.body).status) {
             const {idUsuario, idOficina} = req.body 
 
             const participanteExiste = await Participante.findOne({
@@ -127,7 +129,7 @@ router.put('/edit/:id', async (req, res) => {
                 res.status(400).json({ error: 'ERRO, participante já existe.' })
             }
         } else {
-            res.status(500).json({error: validation.validarParticipante(req.body).mensagem})
+            res.status(500).json({error: validarParticipante(req.body).mensagem})
         }
     } catch (error) {
         console.error(error)

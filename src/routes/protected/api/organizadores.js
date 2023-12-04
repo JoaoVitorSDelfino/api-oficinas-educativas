@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Organizador = require("../../../models/organizador")
-const validation = require('../../../utils/validation')
+
+const validation = require('../../../controller/controller')
+const validarOrganizador = require('../../../controller/organizadorController')
 
 // Rota para obter lista de organizadores
 router.get('/list/:limite/:pagina', async (req, res) => {
@@ -30,7 +32,7 @@ router.get('/list/:limite/:pagina', async (req, res) => {
 router.post('/add', async (req, res) => {
     try {
         // Valida se valores digitados são válidos
-        if (validation.validarOrganizador(req.body).status) {
+        if (validarOrganizador(req.body).status) {
             const {idUsuario, idOficina} = req.body 
 
             const organizadorExiste = await Organizador.findOne({
@@ -54,8 +56,8 @@ router.post('/add', async (req, res) => {
                 res.status(400).json({ error: 'ERRO, organizador já existe.' })
             }
         } else {
-            console.log(validation.validarOrganizador(req.body).mensagem)
-            res.status(400).json({ error: validation.validarOrganizador(req.body).mensagem })
+            console.log(validarOrganizador(req.body).mensagem)
+            res.status(400).json({ error: validarOrganizador(req.body).mensagem })
         }
     } catch (error) {
         // Caso algum id informado não exista
@@ -96,7 +98,7 @@ router.put('/edit/:id', async (req, res) => {
         })
 
         // Valida se valores digitados são válidos
-        if (validation.validarOrganizador(req.body).status) {
+        if (validarOrganizador(req.body).status) {
             const {idUsuario, idOficina} = req.body 
 
             const organizadorExiste = await Organizador.findOne({
