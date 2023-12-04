@@ -1,19 +1,21 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 
+// Autentifica o token
 const authenticate = (req, res, next) => {
     const token = req.headers.authorization
 
+    // Verifica se o token foi informado
     if (token) {
+        // Verifica se o token é válido
         jwt.verify(token, 'secret', (err, decoded) => {
             if (err) {
-                return res.status(401).json({ error: 'ERRO, token inválido' })
+                return res.status(401).json({ status: false, error: 'ERRO, token inválido!' })
             }
 
-            req.userId = decoded.userId
             next()
         })
     } else {
-        return res.status(401).json({ error: 'ERRO, você não possui um token!' })
+        return res.status(401).json({ status: false, error: 'ERRO, você não possui um token!' })
     }
 }
 

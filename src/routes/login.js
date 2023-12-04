@@ -12,7 +12,8 @@ router.post('/login', async (req, res) => {
 
         if (usuario) {
             if (senha == usuario.senha) {
-                const token = jwt.sign({ id: usuario.id }, 'secret', { expiresIn: '1h' })
+                const payload = { id: usuario.id, role: usuario.funcao }
+                const token = jwt.sign(payload, 'secret', { expiresIn: '1h' })
                 res.json({ auth: true, mensagem: 'Login bem sucedido!', token: token })
             } else {
                 res.json({ auth: false, mensagem: 'ERRO, senha incorreta!' })
