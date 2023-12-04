@@ -10,4 +10,6 @@ router.get('/admin', authenticate, verifyAdmin, (req, res) => {
     res.json({ status: true, message: 'Você está na rota dedicada a administradores!', userId: req.userId })
 })
 
+router.use('/admin/', require('./add-admin'))
+
 module.exports = router

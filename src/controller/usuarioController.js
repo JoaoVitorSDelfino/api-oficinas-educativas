@@ -8,7 +8,7 @@ function normalizarString(str) {
 }
 
 function validarFuncao(funcao) {
-    const funcoesValidas = ['coordenador', 'professor', 'aluno']
+    const funcoesValidas = ['professor', 'aluno']
 
     // Verificar se o cargo fornecido está na lista de cargos válidos
     if (funcoesValidas.includes(normalizarString(funcao))) {
@@ -30,9 +30,9 @@ const validateUsuario = (dados) => {
     // Validar campos
     if (!validarCampo(funcao)) {
         return {status: false, mensagem: 'ERRO, função não pode ser vazia!'}
-            // funcao != 'Coordenador' || funcao != 'Professor' | funcao != 'Aluno'
+    // funcao != 'Professor' | funcao != 'Aluno'
     } else if (!validarFuncao(funcao)) {
-        return {status: false, mensagem: 'ERRO, função digitada é inválida! Tente coordenador, professor ou aluno'}
+        return {status: false, mensagem: 'ERRO, função digitada é inválida! Tente professor ou aluno'}
     }
 
     if (!validarCampo(nome)) {
@@ -54,4 +54,29 @@ const validateUsuario = (dados) => {
     return {status: true, mensagem: ''}
 }
 
-module.exports = validateUsuario
+const validateAdmin = (dados) => {
+    let {nome, senha, email} = dados
+
+    if (!validarCampo(nome)) {
+        return {status: false, mensagem: 'ERRO, nome não pode ser vazio!'}
+    }
+
+    if (!validarCampo(senha)) {
+        return {status: false, mensagem: 'ERRO, senha não pode ser vazia!'}
+    } else if (senha.length < 8) {
+        return {status: false, mensagem: 'ERRO, senha precisa ser maior!'}
+    } else if (senha.length > 20){
+        return {status: false, mensagem: 'ERRO, senha precisa ser menor!'}
+    }
+
+    if (!validarEmail(email)) {
+        return {status: false, mensagem: 'ERRO, email precisa conter um @!'}
+    }
+
+    return {status: true, mensagem: ''}
+}
+
+module.exports = {
+    validateUsuario,
+    validateAdmin
+}

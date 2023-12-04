@@ -108,7 +108,7 @@ router.delete('/delete/:id', async (req, res) => {
             where: { id: req.params.id },
         });
 
-        // Valida se usuário informada existe
+        // Valida se usuário informado existe
         if (usuario) { 
             await Usuario.destroy({
                 where: { id: req.params.id },
