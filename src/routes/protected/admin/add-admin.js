@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Usuario = require("../../../models/usuario")
-const {validateAdmin} = require('../../../controller/usuarioController')
+const {validateAdmin} = require('../../../controller/validate/usuarioValidation')
 
 router.post('/add-admin', async (req, res) => {
     try {
