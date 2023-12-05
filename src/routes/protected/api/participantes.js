@@ -41,12 +41,8 @@ router.post('/add', verifyProfessor, async (req, res) => {
             res.status(400).json(participante)
         }
     } catch (error) {
-        // Caso algum id informado não exista
-        if (error.name === 'SequelizeForeignKeyConstraintError') {
-            res.status(400).json({ error: 'ERRO, usuário ou oficina não existe!' })
-          } else {
-            res.status(500).json({ error: 'ERRO interno do servidor.' })
-          }
+        console.log(error)
+        res.status(500).json({ error: 'ERRO interno do servidor.' })
     }
 })
 
@@ -77,7 +73,6 @@ router.put('/edit/:id', verifyProfessor, async (req, res) => {
             res.status(400).json(participanteAtualizado)
         }
     } catch (error) {
-        console.error(error)
         res.status(500).json({error: 'ERRO ao editar participante.'})
     }
 })
@@ -93,7 +88,6 @@ router.delete('/delete/:id', async (req, res) => {
             res.status(400).json(participanteExcluido)
         }   
     } catch (error) {
-        console.error(error);
         res.status(500).json({error: 'ERRO ao deletar participante.'})
     }
 })

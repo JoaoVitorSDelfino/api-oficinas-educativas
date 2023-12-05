@@ -2,10 +2,10 @@ const Participante = require('../models/participante')
 const {validateParticipante} = require('./validate/participanteValidation')
 
 module.exports = {
-    criar: async (participante) => {
+    criar: async (dados) => {
         // Valida se valores digitados são válidos
-        if (validateParticipante(participante).status) {
-            const {idUsuario, idOficina} = participante
+        if (validateParticipante(dados).status) {
+            const {idUsuario, idOficina} = dados
 
             const participanteExiste = await Participante.findOne({
                 where: {
@@ -16,15 +16,24 @@ module.exports = {
     
             // Verifica se participante que deseja criar já existe
             if (!participanteExiste) {
+                let novoParticipante
+
                 // Adicionar o participante
-                const novoParticipante = await Participante.create(participante)
-    
+                try {
+                    novoParticipante = await Participante.create(dados)
+                } catch (error) {
+                    // Caso algum id informado não exista
+                    if (error.name === 'SequelizeForeignKeyConstraintError') {
+                        return {status: false, mensagem: 'ERRO, usuário ou oficina não existe!'}
+                    }
+                }
+
                 return {status: true, mensagem: 'Sucesso ao adicionar participante!', participante: novoParticipante}
             } else {
                 return {status: false, mensagem: 'ERRO, participante já existe!'}
             }
         } else {
-            return validateParticipante(participante)
+            return validateParticipante(dados)
         }
     },
 
@@ -39,12 +48,6 @@ module.exports = {
     },
 
     alterar: async (id, novosDados) => {
-        participante = await Participante.findOne({
-            where: {id: id}
-        })
-
-        console.log(novosDados)
-
         // Valida se valores digitados são válidos
         if (validateParticipante(novosDados).status) {
             const {idUsuario, idOficina} = novosDados
@@ -60,10 +63,17 @@ module.exports = {
             // Se o participante a ser editado já existe, mas possui
             // mesmo id que o parâmetro, então o participante pode ser editado
             if (!participanteExiste || (participanteExiste && participanteExiste.id == id)) {
-                await Participante.update(
-                    novosDados, 
-                    {where: {id: id}}
-                )
+                try {
+                    await Participante.update(
+                        novosDados, 
+                        {where: {id: id}}
+                    )
+                } catch (error) {
+                    // Caso algum id informado não exista
+                    if (error.name === 'SequelizeForeignKeyConstraintError') {
+                        return {status: false, mensagem: 'ERRO, usuário ou oficina não existe!'}
+                    }
+                }
 
                 participanteAtualizado = await Participante.findOne({
                     where: {id: id}
@@ -74,7 +84,7 @@ module.exports = {
                 return {status: false, mensagem: 'ERRO, participante já existe.'}
             }
         } else {
-            return {error: validateParticipante(novosDados)}
+            return validateParticipante(novosDados)
         }
     },
 

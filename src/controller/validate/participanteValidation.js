@@ -9,7 +9,7 @@ const validateParticipante = (dados) => {
         return {status: false, mensagem: 'ERRO, id informado deve ser um número inteiro!'}
     } 
 
-    if (!validarCampo(presente)) {
+    if (presente == null) {
         return {status: false, mensagem: 'ERRO, campo presente não pode ser nulo!'}
     } else if (presente !== 1 && presente !== 0 || !Number.isInteger(presente)) {
         return {status: false, mensagem: 'ERRO, campo presente deve ser 0 (para ausente) e 1 (para presente)!'}
