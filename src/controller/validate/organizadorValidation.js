@@ -12,4 +12,4 @@ const validateOrganizador = (dados) => {
     return {status: true, mensagem: ''}
 }
 
-module.exports = validateOrganizador
+module.exports = {validateOrganizador}

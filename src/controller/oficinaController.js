@@ -2,14 +2,14 @@ const Oficina = require('../models/oficina')
 const {validateOficina} = require('./validate/oficinaValidation')
 
 module.exports = {
-    criar: async (oficina) => {
+    criar: async (dados) => {
         // Valida os dados recebidos
-        if (validateOficina(oficina).status) {
-            const novaOficina = await Oficina.create(oficina)
+        if (validateOficina(dados).status) {
+            const novaOficina = await Oficina.create(dados)
 
             return {status: true, mensagem: 'Sucesso ao criar oficina!', oficina: novaOficina}
         } else {
-            return validateOficina(oficina)
+            return validateOficina(dados)
         }
     },
 

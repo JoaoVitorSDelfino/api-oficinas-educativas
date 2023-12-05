@@ -2,17 +2,17 @@ const Usuario = require('../models/usuario')
 const {validateUsuario} = require('./validate/usuarioValidation')
 
 module.exports = {
-    criar: async (usuario) => {
+    criar: async (dados) => {
         // Valida os dados recebidos
-        if (validateUsuario(usuario).status) {
+        if (validateUsuario(dados).status) {
             // Padroniza funcao para ser minúsculo
-            usuario.funcao = usuario.funcao.toLowerCase()
+            dados.funcao = dados.funcao.toLowerCase()
 
-            novoUsuario = await Usuario.create(usuario)
+            novoUsuario = await Usuario.create(dados)
 
-            return {status: true, mensagem: 'Sucesso ao criar usuário!', usuario: usuario}
+            return {status: true, mensagem: 'Sucesso ao criar usuário!', usuario: novoUsuario}
         } else {
-            return validateUsuario(usuario)
+            return validateUsuario(dados)
         }
     },
 
