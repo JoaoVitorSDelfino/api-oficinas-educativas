@@ -19,8 +19,6 @@ module.exports = {
     buscarPorId: async (id) => {
         const usuario = await Usuario.findOne({where: {id: id}})
 
-        console.log(usuario)
-
         if (usuario) {
             return {status: true, mensagem: 'Sucesso ao buscar usuário!', usuario: usuario}
         } else {

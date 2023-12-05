@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyAdmin')
 
 const validation = require('../../../controller/controller')
-const usuarioController = require('../../../controller/usuarioController')
 
 // Rota para obter lista de usuários
 router.get('/list/:limite/:pagina', verifyProfessor, async (req, res) => {
@@ -112,7 +111,7 @@ router.delete('/delete/:id', verifyProfessor, async (req, res) => {
     try {
         const usuarioExcluido = await Usuario.deletar(req.params.id)
 
-        if (usuarioExcluido.status == undefined) {
+        if (usuarioExcluido.status) {
             res.status(200).json(usuarioExcluido)
         } else {
             res.status(400).json(usuarioExcluido)

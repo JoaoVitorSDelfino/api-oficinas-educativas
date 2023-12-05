@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Oficina = require('../../../models/oficina')
+const Oficina = require('../../../controller/oficinaController')
+
+const jwt = require('jsonwebtoken')
+const verifyProfessor = require('../../../middlewares/verifyAdmin')
 
 const validation = require('../../../controller/controller')
-const validarOficina = require('../../../controller/oficinaController')
 
 // Listar lista de oficinas cadastradas
 router.get('/list/:limite/:pagina', async (req, res) => {
@@ -24,99 +26,85 @@ router.get('/list/:limite/:pagina', async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(400).json({error: 'ERRO buscar lista de oficinas'})
+        res.status(500).json({error: 'ERRO buscar lista de oficinas'})
     }
 })
 
 // Adicionar nova oficina
-router.post('/add', async (req, res) => {
+router.post('/add', verifyProfessor, async (req, res) => {
     try {
-        // Valida os dados recebidos
-        if (validarOficina(req.body).status) {
-            const oficina = await Oficina.create(req.body)
+        const oficina = await Oficina.criar(req.body)
 
+        if (oficina.status) {
             res.status(201).json(oficina)
         } else {
-            res.status(400).json({error: validarOficina(req.body).mensagem})
+            res.status(400).json(oficina)
         }
     } catch (error) {
         console.error(error);
-        res.status(400).json({error: 'ERRO ao criar oficina.'})
+        res.status(500).json({error: 'ERRO ao criar oficina.'})
     }
 })
 
 // Pesquisar oficina específica pelo id
 router.get('/view/:id', async (req, res) => {
     try {
-        const oficina = await Oficina.findOne({
-            where: {id: req.params.id}
-        })
+        const oficina = await Oficina.buscarPorId(req.params.id)
 
-        // Valida se oficina foi encontrada
-        if (oficina) {
-            res.json(oficina)
+        // Valida se usuário foi encontrado
+        if (oficina.status) {
+            res.status(201).json(oficina)
         } else {
-            res.status(500).json({error: 'ERRO, oficina não existe!'})
+            res.status(400).json(oficina)
         }
     } catch (error) {
         console.error(error);
-        res.status(400).json({error: 'ERRO ao buscar oficina'})
+        res.status(500).json({error: 'ERRO ao buscar oficina'})
     }
 })
 
 // Alterar uma oficina pelo id
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', verifyProfessor, async (req, res) => {
     try {
-        oficina = await Oficina.findOne({
-            where: {id: req.params.id}
+        /*// Verifica a role do usuário
+        const role = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.role
+        })
+        // Verifica o id do editor (quem deseja editar um usuário)
+        const idEditor = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.id
         })
 
-        // Valida se a oficina informada existe
-        if (oficina) {
-            // Valida se os novos dados são válidos
-            if (validarOficina(req.body).status) {
-                await Oficina.update(
-                    req.body, 
-                    {where: {id: req.params.id}}
-                )
+        if (role == 'professor') {
+            
+        } */
 
-                oficinaAtualizada = await Oficina.findOne({
-                    where: {id: req.params.id}
-                })    
+        oficinaAtualizada = await Oficina.alterar(req.params.id, req.body)
 
-                res.json({status: 'Oficina alterada com sucesso!', oficinaAtualizada})
-            } else {
-                res.status(400).json({error: validarOficina(req.body).mensagem})
-            }
+        if (oficinaAtualizada.status) {
+            res.status(200).json(oficinaAtualizada)
         } else {
-            res.status(500).json({error: 'ERRO, oficina não existe!'})
+            res.status(400).json(oficinaAtualizada)
         }
     } catch (error) {
         console.error(error);
-        res.status(400).json({error: 'ERRO ao editar oficina.'})
+        res.status(500).json({error: 'ERRO ao editar oficina.'})
     }
 })
 
 // Deletar uma oficina pelo id
 router.delete('/delete/:id', async (req, res) => {
     try {
-        const oficina = await Oficina.findOne({
-            where: { id: req.params.id },
-        });
+        const oficinaExcluida = await Oficina.deletar(req.params.id)
 
-        // Valida se oficina informada existe
-        if (oficina) { 
-            await Oficina.destroy({
-                where: { id: req.params.id },
-            });
-        
-            res.json({status: 'Oficina deletada com sucesso!', oficinaExcluida: oficina});
+        if (oficinaExcluida.status) {
+            res.status(200).json(oficinaExcluida)
         } else {
-            res.status(500).json({error: 'ERRO, oficina não existe!'})
+            res.status(400).json(oficinaExcluida)
         }
     } catch (error) {
         console.error(error);
-        res.status(400).json({error: 'ERRO ao deletar oficina.'})
+        res.status(500).json({error: 'ERRO ao deletar oficina.'})
     }
 })
 

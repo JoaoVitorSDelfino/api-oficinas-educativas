@@ -46,4 +46,4 @@ const validateOficina = (dados) => {
     return {status: true, mensagem: ''}
 }
 
-module.exports = validateOficina
+module.exports = {validateOficina}
