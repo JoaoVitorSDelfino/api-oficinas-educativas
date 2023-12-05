@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Participante = require("../../../models/participante")
+const Participante = require('../../../controller/participanteController')
+
+const jwt = require('jsonwebtoken')
+const verifyProfessor = require('../../../middlewares/verifyAdmin')
 
 const validation = require('../../../controller/controller')
-const validarParticipante = require('../../../controller/participanteController')
 
 // Rota para obter lista de participantes
 router.get('/list/:limite/:pagina', async (req, res) => {
@@ -29,43 +31,20 @@ router.get('/list/:limite/:pagina', async (req, res) => {
 })
 
 // Rota para adicionar participante
-router.post('/add', async (req, res) => {
+router.post('/add', verifyProfessor, async (req, res) => {
     try {
-        // Valida se valores digitados são válidos
-        if (validarParticipante(req.body).status) {
-            const {idUsuario, idOficina, presente, nota} = req.body 
+        const participante = await Participante.criar(req.body)
 
-            const participanteExiste = await Participante.findOne({
-                where: {
-                    idUsuario,
-                    idOficina
-                },
-            })
-    
-            // Verifica se participante que deseja criar já existe
-            if (!participanteExiste) {
-                // Adicionar o participante
-                const participante = await Participante.create(req.body)
-    
-                res.status(201).json({
-                    mensagem: 'Participante adicionado com sucesso!',
-                    participante: participante,
-                })
-            } else {
-                console.log('ERRO, participante já existe.')
-                res.status(400).json({ error: 'ERRO, participante já existe.' })
-            }
+        if (participante.status) {
+            res.status(201).json(participante)
         } else {
-            console.log(validarParticipante(req.body).mensagem)
-            res.status(400).json({ error: validarParticipante(req.body).mensagem })
+            res.status(400).json(participante)
         }
     } catch (error) {
         // Caso algum id informado não exista
         if (error.name === 'SequelizeForeignKeyConstraintError') {
-            console.log('ERRO, usuário ou oficina não existe!')
             res.status(400).json({ error: 'ERRO, usuário ou oficina não existe!' })
           } else {
-            console.log('ERRO interno do servidor.')
             res.status(500).json({ error: 'ERRO interno do servidor.' })
           }
     }
@@ -74,89 +53,48 @@ router.post('/add', async (req, res) => {
 // Pesquisar participante específico pelo id
 router.get('/view/:id', async (req, res) => {
     try {
-        const participante = await Participante.findOne({
-            where: {id: req.params.id}
-        })
+        const participante = await Participante.buscarPorId(req.params.id)
 
         // Valida se participante foi encontrado
-        if (participante) {
-            res.json(participante)
+        if (participante.status) {
+            res.status(201).json(participante)
         } else {
-            res.status(500).json({error: 'ERRO, participante não existe!'})
+            res.status(400).json(participante)
         }
     } catch (error) {
-        console.error(error)
-        res.status(400).json({error: 'ERRO ao buscar participante'})
+        res.status(500).json({error: 'ERRO ao buscar participante'})
     }
 })
 
 // Alterar um participante pelo id
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', verifyProfessor, async (req, res) => {
     try {
-        const id = req.params.id
+        const participanteAtualizado = await Participante.alterar(req.params.id, req.body)
         
-        participante = await Participante.findOne({
-            where: {id: id}
-        })
-
-        // Valida se valores digitados são válidos
-        if (validarParticipante(req.body).status) {
-            const {idUsuario, idOficina} = req.body 
-
-            const participanteExiste = await Participante.findOne({
-                where: {
-                    idUsuario,
-                    idOficina
-                },
-            })
-    
-            // Verifica se participante que deseja editar já existe
-            // Se o participante a ser editado já existe, mas possui
-            // mesmo id que o parâmetro, então o participante pode ser editado
-            if (!participanteExiste || (participanteExiste && participanteExiste.id == id)) {
-                await Participante.update(
-                    req.body, 
-                    {where: {id: id}}
-                )
-
-                participanteAtualizado = await Participante.findOne({
-                    where: {id: id}
-                })
-
-                res.json({status: 'Participante alterado com sucesso!', participanteAtualizado})
-            } else {
-                console.log('ERRO, participante já existe.')
-                res.status(400).json({ error: 'ERRO, participante já existe.' })
-            }
+        if (participanteAtualizado.status) {
+            res.status(200).json(participanteAtualizado)
         } else {
-            res.status(500).json({error: validarParticipante(req.body).mensagem})
+            res.status(400).json(participanteAtualizado)
         }
     } catch (error) {
         console.error(error)
-        res.status(400).json({error: 'ERRO ao editar participante.'})
+        res.status(500).json({error: 'ERRO ao editar participante.'})
     }
 })
 
 // Deletar um participante pelo id
 router.delete('/delete/:id', async (req, res) => {
     try {
-        const participante = await Participante.findOne({
-            where: { id: req.params.id },
-        })
+        const participanteExcluido = await Participante.deletar(req.params.id)
 
-        // Valida se participante informado existe
-        if (participante) { 
-            await Participante.destroy({
-                where: { id: req.params.id },
-            })
-        
-            res.json({status: 'Participante deletado com sucesso!', participanteExcluido: participante})
+        if (participanteExcluido.status) {
+            res.status(200).json(participanteExcluido)
         } else {
-            res.status(500).json({error: 'ERRO, participante não existe!'})
-        }
+            res.status(400).json(participanteExcluido)
+        }   
     } catch (error) {
-        console.error(error)
-        res.status(400).json({error: 'ERRO ao deletar participante.'})
+        console.error(error);
+        res.status(500).json({error: 'ERRO ao deletar participante.'})
     }
 })
 

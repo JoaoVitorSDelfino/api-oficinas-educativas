@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Usuario = require("../../../controller/usuarioController")
+const Usuario = require('../../../controller/usuarioController')
 
 const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyAdmin')

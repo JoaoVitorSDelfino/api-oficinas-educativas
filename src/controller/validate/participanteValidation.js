@@ -28,4 +28,4 @@ const validateParticipante = (dados) => {
     return {status: true, mensagem: ''}
 }
 
-module.exports = validateParticipante
+module.exports = {validateParticipante}
