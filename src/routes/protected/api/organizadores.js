@@ -45,10 +45,12 @@ router.post('/add', verifyProfessor, async (req, res) => {
             return decoded.id
         })
 
+        const organizadorExiste = await Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina)
+
         // Apenas professores organizadores ou coordenadores 
         // (não necessariamente organizadores) podem adicionar outros organizadores
         // para a oficina especificada
-        if (idEditor == Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina) || role == 'coordenador') {
+        if (organizadorExiste.status || role == 'coordenador') {
             const organizador = await Organizador.criar(req.body)
 
             if (organizador.status) {
@@ -97,8 +99,8 @@ router.put('/edit/:id', verifyAdmin, async (req, res) => {
     }
 })
 
-// Deletar um organizador pelo id
-router.delete('/delete/:id', verifyProfessor, async (req, res) => {
+// Deletar um organizador pelos ids de usuário e oficina
+router.delete('/delete/:idUsuario/:idOficina', verifyProfessor, async (req, res) => {
     try {
         token = req.headers.authorization
 
@@ -111,10 +113,48 @@ router.delete('/delete/:id', verifyProfessor, async (req, res) => {
             return decoded.id
         })
 
+        const organizadorExiste = await Organizador.buscarPorIdUsuarioEOficina(idEditor, req.params.idOficina)
+
         // Apenas professores organizadores ou coordenadores 
         // (não necessariamente organizadores) podem excluir outros organizadores
         // para a oficina especificada
-        if (idEditor == Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina) || role == 'coordenador') {
+        if (organizadorExiste || role == 'coordenador') {
+            const organizadorExcluido = await Organizador.deletarPorIdUsuarioEOficina(req.params.idUsuario, req.params.idOficina)
+
+            if (organizadorExcluido.status) {
+                res.status(200).json(organizadorExcluido)
+            } else {
+                res.status(400).json(organizadorExcluido)
+            }
+        } else {
+            res.status(400).json({status: false, mensagem: 'ERRO, você não é um organizador desta oficina, logo não pode excluir outros organizadores!'})
+        } 
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error: 'ERRO ao deletar organizador.'})
+    }
+})
+
+// Deletar um organizador pelo id de organizador
+router.delete('/deleteById/:id', verifyAdmin, async (req, res) => {
+    try {
+        token = req.headers.authorization
+
+        // Verifica a role do editor (quem deseja alterar uma oficina)
+        const role = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.role
+        })
+        // Verifica o id do editor
+        const idEditor = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.id
+        })
+
+        const organizadorExiste = await Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina)
+
+        // Apenas professores organizadores ou coordenadores 
+        // (não necessariamente organizadores) podem excluir outros organizadores
+        // para a oficina especificada
+        if (organizadorExiste || role == 'coordenador') {
             const organizadorExcluido = await Organizador.deletar(req.params.id)
 
             if (organizadorExcluido.status) {

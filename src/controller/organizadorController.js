@@ -101,6 +101,29 @@ module.exports = {
         }
     },
 
+    deletarPorIdUsuarioEOficina: async (idUsuario, idOficina) => {
+        const organizador = await Organizador.findOne({
+            where: { 
+                idUsuario: idUsuario,
+                idOficina: idOficina 
+            },
+        })
+
+        // Valida se organizador informado existe
+        if (organizador) { 
+            await Organizador.destroy({
+                where: { 
+                    idUsuario: idUsuario,
+                    idOficina: idOficina 
+                }
+            })
+
+            return {status: true, mensagem: 'Sucesso ao deletar organizador!', organizadorExcluido: organizador}
+        } else {
+            return {status: false, mensagem: 'ERRO, organizador não existe!'}
+        }
+    },
+
     deletarOrganizadoresDeOficina: async (idOficina) => {
         const organizadoresDeletados = await Organizador.findAll({
             where: { idOficina: null },
