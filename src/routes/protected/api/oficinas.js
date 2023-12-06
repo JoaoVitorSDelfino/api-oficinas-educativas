@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
+
 const Oficina = require('../../../controller/oficinaController')
 const Organizador = require('../../../controller/organizadorController')
+const Participante = require('../../../controller/participanteController')
 
 const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyProfessor')
@@ -148,8 +150,13 @@ router.delete('/delete/:id', verifyProfessor, async (req, res) => {
 
             if (oficinaExcluida.status) {
                 const organizadoresDeletados = await Organizador.deletarOrganizadoresDeOficina(req.params.id)
+                const participantesDeletados = await Participante.deletarParticipantesDeOficina(req.params.id)
 
-                res.status(200).json({excluir: oficinaExcluida, organizadoresDeletados: organizadoresDeletados.organizadoresDeletados})
+                res.status(200).json({excluir: {
+                                        oficinaExcluida, 
+                                        organizadoresDeletados: organizadoresDeletados.organizadoresDeletados,
+                                        participantesDeletados: participantesDeletados.participantesDeletados
+                                    }})
             } else {
                 res.status(400).json({excluir: oficinaExcluida})
             }

@@ -21,6 +21,6 @@ const Participante = db.define('participante', {
     },
 })
 
-Participante.belongsTo(Usuario, { foreignKey: 'idUsuario' })
+Participante.belongsTo(Usuario, { foreignKey: 'idUsuario', onDelete: 'CASCADE' })
 
 module.exports = Participante

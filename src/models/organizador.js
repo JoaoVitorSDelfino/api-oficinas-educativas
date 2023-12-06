@@ -13,6 +13,6 @@ const Organizador = db.define('organizadores', {
     },
 })
 
-Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario' })
+Organizador.belongsTo(Usuario, { foreignKey: 'idUsuario', onDelete: 'CASCADE' })
 
 module.exports = Organizador

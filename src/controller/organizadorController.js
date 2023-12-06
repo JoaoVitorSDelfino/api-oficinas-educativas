@@ -126,7 +126,7 @@ module.exports = {
 
     deletarOrganizadoresDeOficina: async (idOficina) => {
         const organizadoresDeletados = await Organizador.findAll({
-            where: { idOficina: null },
+            where: {idOficina: null},
         })
 
         await Organizador.destroy({where: { idOficina: null }})

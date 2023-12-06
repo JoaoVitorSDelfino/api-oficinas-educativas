@@ -191,6 +191,16 @@ module.exports = {
         }
     },
 
+    deletarParticipantesDeOficina: async (idOficina) => {
+        const participantesDeletados = await Participante.findAll({
+            where: { idOficina: null },
+        })
+
+        await Participante.destroy({where: { idOficina: null }})
+
+        return {status: true, mensagem: 'Sucesso ao deletar participantes!', participantesDeletados: participantesDeletados}
+    }, 
+
     listar: async () => {
         return await PostModel.findAll()
     },
