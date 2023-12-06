@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Organizador = require('../../../controller/organizadorController')
+const Usuario = require('../../../controller/usuarioController')
 
 const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyProfessor')
@@ -44,6 +45,13 @@ router.post('/add', verifyProfessor, async (req, res) => {
         const idEditor = jwt.verify(token, 'secret', (err, decoded) => {
             return decoded.id
         })
+
+        const usuario = await Usuario.buscarPorId(req.body.idUsuario)
+
+        if (usuario.usuario.funcao == 'aluno') {
+            res.status(400).json({status: false, mensagem: 'ERRO, um aluno não pode ser organizador!'})
+            return
+        }
 
         const organizadorExiste = await Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina)
 
