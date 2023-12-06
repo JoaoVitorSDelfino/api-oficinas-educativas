@@ -146,33 +146,13 @@ router.delete('/delete/:idUsuario/:idOficina', verifyProfessor, async (req, res)
 // Deletar um organizador pelo id de organizador
 router.delete('/deleteById/:id', verifyAdmin, async (req, res) => {
     try {
-        token = req.headers.authorization
+        const organizadorExcluido = await Organizador.deletar(req.params.id)
 
-        // Verifica a role do editor (quem deseja alterar uma oficina)
-        const role = jwt.verify(token, 'secret', (err, decoded) => {
-            return decoded.role
-        })
-        // Verifica o id do editor
-        const idEditor = jwt.verify(token, 'secret', (err, decoded) => {
-            return decoded.id
-        })
-
-        const organizadorExiste = await Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina)
-
-        // Apenas professores organizadores ou coordenadores 
-        // (não necessariamente organizadores) podem excluir outros organizadores
-        // para a oficina especificada
-        if (organizadorExiste || role == 'coordenador') {
-            const organizadorExcluido = await Organizador.deletar(req.params.id)
-
-            if (organizadorExcluido.status) {
-                res.status(200).json(organizadorExcluido)
-            } else {
-                res.status(400).json(organizadorExcluido)
-            }
+        if (organizadorExcluido.status) {
+            res.status(200).json(organizadorExcluido)
         } else {
-            res.status(400).json({status: false, mensagem: 'ERRO, você não é um organizador desta oficina, logo não pode excluir outros organizadores!'})
-        } 
+            res.status(400).json(organizadorExcluido)
+        }
     } catch (error) {
         console.error(error)
         res.status(500).json({error: 'ERRO ao deletar organizador.'})

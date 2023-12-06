@@ -47,6 +47,21 @@ module.exports = {
         }   
     },
 
+    buscarPorIdUsuarioEOficina: async (idUsuario, idOficina) => {
+        const participante = await Participante.findOne({
+            where: { 
+                        idUsuario: idUsuario,
+                        idOficina: idOficina,
+                   },
+        })
+
+        if (participante) {
+            return {status: true, mensagem: 'Sucesso ao buscar participante!', participante: participante}
+        } else {
+            return {status: false, mensagem: 'ERRO, participante não existe!'}
+        }
+    },
+
     alterar: async (id, novosDados) => {
         // Valida se valores digitados são válidos
         if (validateParticipante(novosDados).status) {
@@ -88,14 +103,87 @@ module.exports = {
         }
     },
 
+    alterarPorIdUsuarioEOficina: async (idUsuario, idOficina, novosDados) => {
+        idUsuario = parseInt(idUsuario)
+        idOficina = parseInt(idOficina)
+
+        const presente = novosDados.presente
+        const nota = novosDados.nota
+
+        novosDados = {idUsuario, idOficina, presente, nota}
+
+        // Valida se valores digitados são válidos
+        if (validateParticipante(novosDados).status) {
+            const participanteExiste = await Participante.findOne({
+                where: {
+                    idUsuario,
+                    idOficina
+                },
+            })
+    
+            // Verifica se participante que deseja editar já existe
+            // Se o participante a ser editado já existe, mas possui
+            // mesmo id que o parâmetro, então o participante pode ser editado
+            if (!participanteExiste || (participanteExiste && participanteExiste.idUsuario == idUsuario && participanteExiste.idOficina == idOficina)) {
+                const sucesso = await Participante.update(
+                                    novosDados, 
+                                    {where: {
+                                        idUsuario: idUsuario,
+                                        idOficina: idOficina
+                                    }}
+                                )
+
+                if (sucesso == 0) {
+                    return {status: false, mensagem: 'ERRO, participante não existe!'}
+                }
+
+                participanteAtualizado = await Participante.findOne({
+                    where: {
+                        idUsuario: idUsuario,
+                        idOficina: idOficina
+                    }
+                })
+
+                return {status: true, mensagem: 'Participante alterado com sucesso!', participanteAtualizado: participanteAtualizado}
+            } else {
+                return {status: false, mensagem: 'ERRO, participante já existe.'}
+            }
+        } else {
+            return validateParticipante(novosDados)
+        }
+    },
+
     deletar: async (id) => {
         const participante = await Participante.findOne({
             where: { id: id },
-        });
+        })
 
         // Valida se participante informado existe
         if (participante) { 
             await Participante.destroy({where: { id: id }})
+
+            return {status: true, mensagem: 'Sucesso ao deletar participante!', participanteExcluido: participante}
+        } else {
+            return {status: false, mensagem: 'ERRO, participante não existe!'}
+        }
+    },
+
+    deletarPorIdUsuarioEOficina: async (idUsuario, idOficina) => {
+        const participante = await Participante.findOne({
+            where: { 
+                idUsuario: idUsuario,
+                idOficina: idOficina
+            },
+        })
+
+        // Valida se participante informado existe
+        if (participante) { 
+            await Participante.destroy({
+                where: { 
+                    idUsuario: idUsuario,
+                    idOficina: idOficina
+                }
+            })
 
             return {status: true, mensagem: 'Sucesso ao deletar participante!', participanteExcluido: participante}
         } else {
