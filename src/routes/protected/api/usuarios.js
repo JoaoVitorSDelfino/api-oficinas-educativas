@@ -3,7 +3,8 @@ const router = express.Router()
 const Usuario = require('../../../controller/usuarioController')
 
 const jwt = require('jsonwebtoken')
-const verifyProfessor = require('../../../middlewares/verifyAdmin')
+const verifyProfessor = require('../../../middlewares/verifyProfessor')
+const verifyAdmin = require('../../../middlewares/verifyAdmin')
 
 const validation = require('../../../controller/controller')
 
@@ -30,7 +31,7 @@ router.get('/list/:limite/:pagina', verifyProfessor, async (req, res) => {
     }
 })
 
-// Adicionar novo usuário
+// Adicionar novo usuário (professor ou aluno)
 router.post('/add', verifyProfessor, async (req, res) => {
     try {
         const usuario = await Usuario.criar(req.body)
@@ -107,7 +108,8 @@ router.put('/edit/:id', async (req, res) => {
 })
 
 // Deletar um usuário pelo id
-router.delete('/delete/:id', verifyProfessor, async (req, res) => {
+// Apenas administradores (coordenadores) podem remover usuários
+router.delete('/delete/:id', verifyAdmin, async (req, res) => {
     try {
         const usuarioExcluido = await Usuario.deletar(req.params.id)
 

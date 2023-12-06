@@ -89,9 +89,9 @@ module.exports = {
     deletar: async (id) => {
         const organizador = await Organizador.findOne({
             where: { id: id },
-        });
+        })
 
-        // Valida se usuário informado existe
+        // Valida se organizador informado existe
         if (organizador) { 
             await Organizador.destroy({where: { id: id }})
 
@@ -99,6 +99,31 @@ module.exports = {
         } else {
             return {status: false, mensagem: 'ERRO, organizador não existe!'}
         }
+    },
+
+    deletarOrganizadoresDeOficina: async (idOficina) => {
+        const organizadoresDeletados = await Organizador.findAll({
+            where: { idOficina: null },
+        })
+
+        await Organizador.destroy({where: { idOficina: null }})
+
+        return {status: true, mensagem: 'Sucesso ao deletar organizadores!', organizadoresDeletados: organizadoresDeletados}
+    },
+
+    buscarPorIdUsuarioEOficina: async (idUsuario, idOficina) => {
+        const organizador = await Organizador.findOne({
+            where: { 
+                        idUsuario: idUsuario,
+                        idOficina: idOficina,
+                   },
+        })
+
+        if (organizador) {
+            return {status: true, mensagem: 'Sucesso ao buscar organizador!', organizador: organizador}
+        } else {
+            return {status: false, mensagem: 'ERRO, organizador não existe!'}
+        } 
     },
 
     listar: async () => {

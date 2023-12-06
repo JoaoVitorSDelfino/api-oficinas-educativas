@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express")
 const app = express()
 
@@ -19,7 +21,7 @@ app.get('/', (req, res) => {
     res.send('teste')
 });
 
-let port = 3000
+port = process.env.PORT
 
 app.use('/', require('./routes/protected/protected'))
 app.use('/', require('./routes/login'))

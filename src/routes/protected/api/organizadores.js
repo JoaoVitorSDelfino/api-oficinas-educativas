@@ -3,7 +3,8 @@ const router = express.Router()
 const Organizador = require('../../../controller/organizadorController')
 
 const jwt = require('jsonwebtoken')
-const verifyProfessor = require('../../../middlewares/verifyAdmin')
+const verifyProfessor = require('../../../middlewares/verifyProfessor')
+const verifyAdmin = require('../../../middlewares/verifyAdmin')
 
 const validation = require('../../../controller/controller')
 
@@ -31,14 +32,32 @@ router.get('/list/:limite/:pagina', async (req, res) => {
 })
 
 // Rota para adicionar organizador
-router.post('/add', async (req, res) => {
+router.post('/add', verifyProfessor, async (req, res) => {
     try {
-        const organizador = await Organizador.criar(req.body)
+        token = req.headers.authorization
 
-        if (organizador.status) {
-            res.status(201).json(organizador)
+        // Verifica a role do editor (quem deseja alterar uma oficina)
+        const role = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.role
+        })
+        // Verifica o id do editor
+        const idEditor = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.id
+        })
+
+        // Apenas professores organizadores ou coordenadores 
+        // (não necessariamente organizadores) podem adicionar outros organizadores
+        // para a oficina especificada
+        if (idEditor == Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina) || role == 'coordenador') {
+            const organizador = await Organizador.criar(req.body)
+
+            if (organizador.status) {
+                res.status(201).json(organizador)
+            } else {
+                res.status(400).json(organizador)
+            }
         } else {
-            res.status(400).json(organizador)
+            res.status(400).json({status: false, mensagem: 'ERRO, você não é um organizador desta oficina, logo não pode adicionar outros organizadores!'})
         }
     } catch (error) {
         console.log(error)
@@ -64,7 +83,7 @@ router.get('/view/:id', async (req, res) => {
 })
 
 // Alterar um organizador pelo id
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', verifyAdmin, async (req, res) => {
     try {
         const organizadorAtualizado = await Organizador.alterar(req.params.id, req.body)
         
@@ -79,14 +98,32 @@ router.put('/edit/:id', async (req, res) => {
 })
 
 // Deletar um organizador pelo id
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', verifyProfessor, async (req, res) => {
     try {
-        const organizadorExcluido = await Organizador.deletar(req.params.id)
+        token = req.headers.authorization
 
-        if (organizadorExcluido.status) {
-            res.status(200).json(organizadorExcluido)
+        // Verifica a role do editor (quem deseja alterar uma oficina)
+        const role = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.role
+        })
+        // Verifica o id do editor
+        const idEditor = jwt.verify(token, 'secret', (err, decoded) => {
+            return decoded.id
+        })
+
+        // Apenas professores organizadores ou coordenadores 
+        // (não necessariamente organizadores) podem excluir outros organizadores
+        // para a oficina especificada
+        if (idEditor == Organizador.buscarPorIdUsuarioEOficina(idEditor, req.body.idOficina) || role == 'coordenador') {
+            const organizadorExcluido = await Organizador.deletar(req.params.id)
+
+            if (organizadorExcluido.status) {
+                res.status(200).json(organizadorExcluido)
+            } else {
+                res.status(400).json(organizadorExcluido)
+            }
         } else {
-            res.status(400).json(organizadorExcluido)
+            res.status(400).json({status: false, mensagem: 'ERRO, você não é um organizador desta oficina, logo não pode excluir outros organizadores!'})
         } 
     } catch (error) {
         console.error(error)

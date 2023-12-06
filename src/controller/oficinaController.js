@@ -24,14 +24,8 @@ module.exports = {
     },
 
     alterar: async (id, novosDados) => {
-        const oficina = await Oficina.findOne({where: {id: id}})
-
-        if (!oficina) {
-            return {status: false, mensagem: 'ERRO, oficina não existe!'}
-        }
-
         if (validateOficina(novosDados).status) {
-            await oficina.update(
+            await Oficina.update(
                 novosDados, 
                 {where: {id: id}}
             )
@@ -47,18 +41,11 @@ module.exports = {
     },
 
     deletar: async (id) => {
-        const oficina = await Oficina.findOne({
-            where: { id: id },
-        });
+        const oficina = await Oficina.findOne({where: {id: id}})
 
-        // Valida se usuário informado existe
-        if (oficina) { 
-            await Oficina.destroy({where: { id: id }})
+        await Oficina.destroy({where: { id: id }})
 
-            return {status: true, mensagem: 'Sucesso ao deletar oficina!', oficinaExcluido: oficina}
-        } else {
-            return {status: false, mensagem: 'ERRO, oficina não existe!'}
-        }
+        return {status: true, mensagem: 'Sucesso ao deletar oficina!', oficinaExcluida: oficina}
     },
 
     listar: async () => {
