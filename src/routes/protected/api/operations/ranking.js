@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 
-const jwt = require('jsonwebtoken')
 const axios = require('axios')
 
 // Essa rota cria um ranking de usuarios que mais

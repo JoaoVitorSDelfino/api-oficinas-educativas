@@ -11,5 +11,6 @@ router.get('/operations', async (req, res) => {
 })
 
 router.use('/operations/', require('./ranking'))
+router.use('/operations/', require('./workedTogether'))
 
 module.exports = router
