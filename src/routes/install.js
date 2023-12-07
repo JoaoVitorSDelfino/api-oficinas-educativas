@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const dados = require("../../data/dadosIniciais")
+const dados = require("../data/dadosIniciais")
 
-const Oficina = require('../../models/oficina')
-const Usuario = require('../../models/usuario')
-const Organizador = require("../../models/organizador")
-const Participante = require("../../models/participante")
+const Oficina = require('../models/oficina')
+const Usuario = require('../models/usuario')
+const Organizador = require("../models/organizador")
+const Participante = require("../models/participante")
 
 router.get('/install', async (req, res) => {
     try {

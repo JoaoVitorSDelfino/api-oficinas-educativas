@@ -25,6 +25,7 @@ port = process.env.PORT
 
 app.use('/', require('./routes/protected/protected'))
 app.use('/', require('./routes/login'))
+app.use('/', require('./routes/install'))
 
 app.listen(port, function() {
     console.log('Server is running at port ' + port)

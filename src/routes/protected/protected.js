@@ -13,7 +13,6 @@ router.use('/protected', authenticate)
 router.use('/protected/', require('./api/api'))
 router.use('/protected/', require('./admin/admin'))
 
-router.use('/protected/', require('./install'))
 router.use('/protected/', require('./drop-data'))
 
 module.exports = router
