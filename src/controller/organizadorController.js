@@ -1,5 +1,6 @@
 const Organizador = require('../models/organizador')
 const {validateOrganizador} = require('./validate/organizadorValidation')
+const validarBuscaLista = require('./controller').validarBuscaLista
 
 module.exports = {
     criar: async (organizador) => {
@@ -150,6 +151,19 @@ module.exports = {
     },
 
     listar: async () => {
-        return await PostModel.findAll()
+        return await Organizador.findAll()
     },
+
+    listarPaginacao: async (limite, pagina) => {
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validarBuscaLista(limite, pagina).status) {
+            const organizadores = await Organizador.findAll({offset: pagina, limit: limite})
+    
+            return {status: true, mensagem: 'Sucesso ao buscar página de organizadores!', organizadores: organizadores}
+        } else {
+            return validarBuscaLista(limite, pagina)
+        }
+    }
 }

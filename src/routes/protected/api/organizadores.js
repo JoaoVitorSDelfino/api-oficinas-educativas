@@ -7,28 +7,32 @@ const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyProfessor')
 const verifyAdmin = require('../../../middlewares/verifyAdmin')
 
-const validation = require('../../../controller/controller')
-
 // Rota para obter lista de organizadores
 router.get('/list/:limite/:pagina', async (req, res) => {
     try {
         let {limite, pagina} = req.params
 
-        limite = parseInt(limite)
-        pagina = (pagina - 1) * 5
+        const listaPaginada = await Organizador.listarPaginacao(limite, pagina)
 
-        if (validation.validarBuscaLista(limite, pagina).status) {
-            const organizadores = await Organizador.findAll({offset: pagina, limit: limite})
-            const jsonOrganizadores = JSON.stringify({lista: organizadores}, null, 2)
-    
-            res.setHeader('Content-Type', 'application/json')
-            res.end(jsonOrganizadores)
+        if (listaPaginada.status) {
+            res.status(200).json(listaPaginada)
         } else {
-            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+            res.status(400).json(listaPaginada)
         }
     } catch (error) {
         console.error(error);
         res.status(400).json({error: 'ERRO buscar lista de organizadores'})
+    }
+})
+
+router.get('/listAll/', verifyAdmin, async (req, res) => {
+    try {   
+        const organizadores = await Organizador.listar()
+
+        res.status(200).json({status: true, mensagem: 'Sucesso ao buscar dados de organizadores!', organizadores: organizadores})
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({error: 'ERRO obter dados de organizadores'})
     }
 })
 

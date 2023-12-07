@@ -13,21 +13,27 @@ router.get('/list/:limite/:pagina', verifyProfessor, async (req, res) => {
     try {
         let {limite, pagina} = req.params
 
-        limite = parseInt(limite)
-        pagina = (pagina - 1) * 5
+        const listaPaginada = await Usuario.listarPaginacao(limite, pagina)
 
-        if (validation.validarBuscaLista(limite, pagina).status) {
-            const usuarios = await Usuario.findAll({offset: pagina, limit: limite})
-            const jsonUsuarios = JSON.stringify({lista: usuarios}, null, 2)
-    
-            res.setHeader('Content-Type', 'application/json')
-            res.end(jsonUsuarios)
+        if (listaPaginada.status) {
+            res.status(200).json(listaPaginada)
         } else {
-            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+            res.status(400).json(listaPaginada)
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({error: 'ERRO buscar lista de usuarios'})
+        console.error(error)
+        res.status(500).json({error: 'ERRO buscar lista de usuários'})
+    }
+})
+
+router.get('/listAll/', verifyAdmin, async (req, res) => {
+    try {   
+        const usuarios = await Usuario.listar()
+
+        res.status(200).json({status: true, mensagem: 'Sucesso ao buscar dados de usuários!', usuarios: usuarios})
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({error: 'ERRO obter dados de usuários'})
     }
 })
 

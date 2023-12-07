@@ -7,8 +7,6 @@ const Oficina = require('../../../controller/oficinaController')
 
 const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyProfessor')
-
-const validation = require('../../../controller/controller')
 const verifyAdmin = require('../../../middlewares/verifyAdmin')
 
 // Rota para obter lista de participantes
@@ -16,21 +14,27 @@ router.get('/list/:limite/:pagina', async (req, res) => {
     try {
         let {limite, pagina} = req.params
 
-        limite = parseInt(limite)
-        pagina = (pagina - 1) * 5
+        const listaPaginada = await Participante.listarPaginacao(limite, pagina)
 
-        if (validation.validarBuscaLista(limite, pagina).status) {
-            const participantes = await Participante.findAll({offset: pagina, limit: limite})
-            const jsonParticipantes = JSON.stringify({lista: participantes}, null, 2)
-    
-            res.setHeader('Content-Type', 'application/json')
-            res.end(jsonParticipantes)
+        if (listaPaginada.status) {
+            res.status(200).json(listaPaginada)
         } else {
-            res.status(500).json({error: validation.validarBuscaLista(limite, pagina).mensagem})
+            res.status(400).json(listaPaginada)
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO buscar lista de participantes'})
+    }
+})
+
+router.get('/listAll/', verifyAdmin, async (req, res) => {
+    try {   
+        const participantes = await Participante.listar()
+
+        res.status(200).json({status: true, mensagem: 'Sucesso ao buscar dados de participantes!', participantes: participantes})
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({error: 'ERRO obter dados de participantes'})
     }
 })
 

@@ -1,5 +1,6 @@
 const Oficina = require('../models/oficina')
 const {validateOficina} = require('./validate/oficinaValidation')
+const validarBuscaLista = require('./controller').validarBuscaLista
 
 module.exports = {
     criar: async (dados) => {
@@ -49,6 +50,19 @@ module.exports = {
     },
 
     listar: async () => {
-        return await PostModel.findAll()
+        return await Oficina.findAll()
     },
+
+    listarPaginacao: async (limite, pagina) => {
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validarBuscaLista(limite, pagina).status) {
+            const oficinas = await Oficina.findAll({offset: pagina, limit: limite})
+    
+            return {status: true, mensagem: 'Sucesso ao buscar página de oficinas!', oficinas: oficinas}
+        } else {
+            return validarBuscaLista(limite, pagina)
+        }
+    }
 }

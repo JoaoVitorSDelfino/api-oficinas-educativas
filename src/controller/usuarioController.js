@@ -1,5 +1,6 @@
 const Usuario = require('../models/usuario')
 const {validateUsuario} = require('./validate/usuarioValidation')
+const validarBuscaLista = require('./controller').validarBuscaLista
 
 module.exports = {
     criar: async (dados) => {
@@ -65,6 +66,19 @@ module.exports = {
     },
 
     listar: async () => {
-        return await PostModel.findAll()
+        return await Usuario.findAll()
     },
+
+    listarPaginacao: async (limite, pagina) => {
+        limite = parseInt(limite)
+        pagina = (pagina - 1) * 5
+
+        if (validarBuscaLista(limite, pagina).status) {
+            const usuarios = await Usuario.findAll({offset: pagina, limit: limite})
+    
+            return {status: true, mensagem: 'Sucesso ao buscar página de usuários!', usuario: usuarios}
+        } else {
+            return validarBuscaLista(limite, pagina)
+        }
+    }
 }
