@@ -10,6 +10,8 @@ router.get('/api', async (req, res) => {
     }
 })
 
+router.use('/api', require('./operations/operations'))
+
 router.use('/api/oficinas', require('./oficinas'))
 router.use('/api/usuarios', require('./usuarios'))
 router.use('/api/organizadores', require('./organizadores'))
