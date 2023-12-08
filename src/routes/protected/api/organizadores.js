@@ -25,17 +25,6 @@ router.get('/list/:limite/:pagina', async (req, res) => {
     }
 })
 
-router.get('/listAll/', verifyAdmin, async (req, res) => {
-    try {   
-        const organizadores = await Organizador.listar()
-
-        res.status(200).json({status: true, mensagem: 'Sucesso ao buscar dados de organizadores!', organizadores: organizadores})
-    } catch (error) {
-        console.error(error)
-        res.status(400).json({error: 'ERRO obter dados de organizadores'})
-    }
-})
-
 // Rota para adicionar organizador
 router.post('/add', verifyProfessor, async (req, res) => {
     try {

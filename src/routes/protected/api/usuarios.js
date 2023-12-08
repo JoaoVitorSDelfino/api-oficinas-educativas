@@ -26,17 +26,6 @@ router.get('/list/:limite/:pagina', verifyProfessor, async (req, res) => {
     }
 })
 
-router.get('/listAll/', verifyAdmin, async (req, res) => {
-    try {   
-        const usuarios = await Usuario.listar()
-
-        res.status(200).json({status: true, mensagem: 'Sucesso ao buscar dados de usuários!', usuarios: usuarios})
-    } catch (error) {
-        console.error(error)
-        res.status(400).json({error: 'ERRO obter dados de usuários'})
-    }
-})
-
 // Adicionar novo usuário (professor ou aluno)
 router.post('/add', verifyProfessor, async (req, res) => {
     try {

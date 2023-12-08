@@ -3,8 +3,7 @@ const router = express.Router()
 
 const Oficina = require('../../../../controller/oficinaController')
 const Usuario = require('../../../../controller/usuarioController')
-
-const axios = require('axios')
+const Participante = require('../../../../controller/participanteController')
 
 // Essa rota cria recebe um usuário, e verifica
 // todos os usuários que já participou de uma oficina
@@ -16,13 +15,7 @@ router.get('/workedTogether/:idUsuario', async (req, res) => {
         idUsuarioEscolhido = req.params.idUsuario
 
         // Obtém a lista de todos os participantes
-        const dadosParticipantes = await axios.get('http://localhost:3000/protected/api/participantes/listAll', {
-            headers: {
-                'Authorization': token
-            }
-        }).then(response => {
-            return response.data.participantes
-        })
+        const dadosParticipantes = await Participante.listar()
 
         let oficinasParticipadas = [],
             usuariosParticipantes = [],

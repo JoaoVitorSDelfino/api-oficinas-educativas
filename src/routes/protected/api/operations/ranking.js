@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const axios = require('axios')
+const Oficina = require('../../../../controller/oficinaController')
+const Usuario = require('../../../../controller/usuarioController')
+const Organizador = require('../../../../controller/organizadorController')
 
 // Essa rota cria um ranking de usuarios que mais
 // organizaram oficinas
@@ -10,20 +12,8 @@ router.get('/ranking', async (req, res) => {
         token = req.headers.authorization
 
         // Obtém a lista de todos os usuários e organizadores
-        const dadosUsuarios = await axios.get('http://localhost:3000/protected/api/usuarios/listAll', {
-            headers: {
-                'Authorization': token
-            }
-        }).then(response => {
-            return response.data.usuarios
-        })
-        const dadosOrganizadores = await axios.get('http://localhost:3000/protected/api/organizadores/listAll', {
-            headers: {
-                'Authorization': token
-            }
-        }).then(response => {
-            return response.data.organizadores
-        })
+        const dadosUsuarios = await Usuario.listar()
+        const dadosOrganizadores = await Organizador.listar()
 
         let ranking = [],
             posicao = 0,

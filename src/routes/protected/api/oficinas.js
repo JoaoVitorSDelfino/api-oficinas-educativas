@@ -27,17 +27,6 @@ router.get('/list/:limite/:pagina', async (req, res) => {
     }
 })
 
-router.get('/listAll/', verifyAdmin, async (req, res) => {
-    try {   
-        const oficinas = await Oficina.listar()
-
-        res.status(200).json({status: true, mensagem: 'Sucesso ao buscar dados de oficinas!', oficinas: oficinas})
-    } catch (error) {
-        console.error(error)
-        res.status(400).json({error: 'ERRO obter dados de oficinas'})
-    }
-})
-
 // Adicionar nova oficina
 router.post('/add', verifyProfessor, async (req, res) => {
     try {
