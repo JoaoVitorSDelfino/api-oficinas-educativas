@@ -202,6 +202,9 @@ module.exports = {
         return {status: true, mensagem: 'Sucesso ao deletar participantes!', participantesDeletados: participantesDeletados}
     }, 
 
+    // Listar todos os participantes no banco de dados,
+    // utilizado apenas para o processamento de dados na
+    // lógica de negócio e para nenhuma outra rota
     listar: async () => {
         return await Participante.findAll()
     },

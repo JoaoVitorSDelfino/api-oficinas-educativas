@@ -65,6 +65,9 @@ module.exports = {
         }
     },
 
+    // Listar todos os usuários no banco de dados,
+    // utilizado apenas para o processamento de dados na
+    // lógica de negócio e para nenhuma outra rota
     listar: async () => {
         return await Usuario.findAll()
     },

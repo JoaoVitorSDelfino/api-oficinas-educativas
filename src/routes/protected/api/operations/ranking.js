@@ -19,6 +19,8 @@ router.get('/ranking', async (req, res) => {
             posicao = 0,
             contador = 1
 
+        // Obtém os usuários organizadores e conta quantas oficinas
+        // cada um participou
         for (let i = 0; i < dadosUsuarios.length; i++) {
             for (let j = 0; j < dadosOrganizadores.length; j++) {
                 if (dadosUsuarios[i].id == dadosOrganizadores[j].idUsuario) {

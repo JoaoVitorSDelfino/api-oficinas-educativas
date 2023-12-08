@@ -6,8 +6,8 @@ const Usuario = require('../../../../controller/usuarioController')
 const Participante = require('../../../../controller/participanteController')
 
 // Essa rota cria recebe um usuário, e verifica
-// todos os usuários que já participou de uma oficina
-// mais que duas vezes com ele
+// todos os usuários que já participou 
+// de uma oficina com ele
 router.get('/workedTogether/:idUsuario', async (req, res) => {
     try {
         token = req.headers.authorization
