@@ -1,4 +1,4 @@
-<h1 align="center"> API Oficina Educativas </h1>
+<h1 align="center"> API Oficinas Educativas </h1>
 
 # Introdução
 Essa API é destinada para a criação de oficinas pedagógicas, tendo a possibilidade de criar, alterar e excluir oficinas, bem como definir participantes e organizadores desses eventos.
