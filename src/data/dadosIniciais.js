@@ -37,14 +37,14 @@ const oficinas = [
 
 const usuarios = [
     {
-        funcao: "professor",
+        funcao: "coordenador",
         nome: "José Matias",
-        senha: "kDiabsydV!2018h8",
+        senha: "123456789",
         email: "josematias@gmail.com"
     },
 
     {   
-        funcao: "coordenador",
+        funcao: "professor",
         nome: "Vanessa Five",
         senha: "fnaf1987",
         email: "vanny@gmail.com"
