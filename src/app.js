@@ -18,7 +18,7 @@ db.authenticate().then(() => {
 })
 
 app.get('/', (req, res) => {
-    res.send('teste')
+    res.send('')
 });
 
 port = process.env.PORT
@@ -26,6 +26,12 @@ port = process.env.PORT
 app.use('/', require('./routes/protected/protected'))
 app.use('/', require('./routes/login'))
 app.use('/', require('./routes/install'))
+
+// Documentação swagger
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_doc.json')
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.listen(port, function() {
     console.log('Server is running at port ' + port)
