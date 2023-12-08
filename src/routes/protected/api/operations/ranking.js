@@ -62,7 +62,6 @@ router.get('/ranking', async (req, res) => {
 
         res.status(201).json({status: true, mensagem: 'Sucesso ao obter ranking de organizadores!', ranking: ranking})
     } catch (error) {
-        console.error(error);
         res.status(400).json({error: 'ERRO ao acessar a rota de ranking'})
     }
 })

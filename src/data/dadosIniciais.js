@@ -124,13 +124,33 @@ const organizadores = [
     },
 
     {
+        idUsuario: 2,
+        idOficina: 4
+    },
+
+    {
+        idUsuario: 2,
+        idOficina: 5
+    },
+
+    {
         idUsuario: 7,
         idOficina: 5
     },
 
     {
+        idUsuario: 7,
+        idOficina: 4
+    },
+
+    {
         idUsuario: 8,
         idOficina: 4
+    },
+
+    {
+        idUsuario: 8,
+        idOficina: 3
     },
 ]
 
@@ -143,10 +163,38 @@ const participantes = [
     },
 
     {
+        presente: 1,
+        nota: 9.0,
+        idUsuario: 3,
+        idOficina: 2
+    },
+
+    {
+        presente: 0,
+        nota: 0.0,
+        idUsuario: 3,
+        idOficina: 3
+    },
+
+    {
         presente: 0,
         nota: 0.0,
         idUsuario: 4,
         idOficina: 1
+    },
+
+    {
+        presente: 1,
+        nota: 6.2,
+        idUsuario: 4,
+        idOficina: 5
+    },
+
+    {
+        presente: 1,
+        nota: 8.0,
+        idUsuario: 4,
+        idOficina: 4
     },
 
     {
@@ -157,6 +205,34 @@ const participantes = [
     },
 
     {
+        presente: 0,
+        nota: 0.0,
+        idUsuario: 6,
+        idOficina: 3
+    },
+
+    {
+        presente: 1,
+        nota: 3.0,
+        idUsuario: 6,
+        idOficina: 4
+    },
+
+    {
+        presente: 1,
+        nota: 10.0,
+        idUsuario: 6,
+        idOficina: 1
+    },
+
+    {
+        presente: 0,
+        nota: 0.0,
+        idUsuario: 6,
+        idOficina: 5
+    },
+
+    {
         presente: 1,
         nota: 5.4,
         idUsuario: 9,
@@ -164,10 +240,38 @@ const participantes = [
     },
 
     {
+        presente: 1,
+        nota: 5.4,
+        idUsuario: 9,
+        idOficina: 1
+    },
+
+    {
+        presente: 1,
+        nota: 5.4,
+        idUsuario: 9,
+        idOficina: 3
+    },
+
+    {
         presente: 0,
         nota: 0.0,
         idUsuario: 10,
         idOficina: 5
+    },
+
+    {
+        presente: 1,
+        nota: 7.4,
+        idUsuario: 10,
+        idOficina: 4
+    },
+
+    {
+        presente: 1,
+        nota: 8.0,
+        idUsuario: 10,
+        idOficina: 1
     },
 ]
 
