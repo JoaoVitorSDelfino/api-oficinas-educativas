@@ -73,20 +73,37 @@ router.put('/edit/:id', async (req, res) => {
             return decoded.id
         })
 
+        dados = req.body
+
         if (role == 'aluno') {
             if (idEditor != req.params.id) {
                 res.status(403).json({error: 'ERRO, você não possui permissão para alterar informação de outros usuários!'})
                 return
-            }
-        }
-
-        if (role == 'professor') {
-            if (idEditor != req.params.id || req.body.funcao != 'aluno') {
-                res.status(403).json({error: 'ERRO, você não possui permissão para alterar as informações de coordenadores e outros professores além de você!'})
+            } else if (dados.funcao && dados.funcao != 'aluno') {
+                res.status(403).json({error: 'ERRO, você não possui permissão para alterar sua função!'})
                 return
             }
         }
-        const usuarioAtualizado = await Usuario.alterar(req.params.id, req.body)
+
+        funcao = (await Usuario.buscarPorId(req.params.id)).usuario.funcao
+        
+        // Verifica se o id digitado é o mesmo do professor e se ele tentou ajustar a função do usuário 
+        if (role == 'professor') {
+            if (idEditor != req.params.id && funcao != 'aluno') {
+                res.status(403).json({error: 'ERRO, você não possui permissão para alterar as informações de coordenadores e outros professores além de você!'})
+                return
+            } else if (dados.funcao && dados.funcao != funcao) {
+                res.status(403).json({error: 'ERRO, você não possui permissão para alterar funções de usuários!'})
+                return
+            }
+        }
+
+        // Se a função não for informada, então ela não é alterada
+        if (!dados.funcao) {
+            dados.funcao = funcao
+        }
+
+        const usuarioAtualizado = await Usuario.alterar(req.params.id, dados)
 
         if (usuarioAtualizado.status) {
             res.status(200).json(usuarioAtualizado)
