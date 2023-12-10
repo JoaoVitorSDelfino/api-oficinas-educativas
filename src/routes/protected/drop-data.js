@@ -6,6 +6,7 @@ const Usuario = require('../../models/usuario')
 const Organizador = require("../../models/organizador")
 const Participante = require("../../models/participante")
 
+// Rota destinada a teste, exclui todas as informações do banco de dados
 router.delete('/drop-data', async (req, res) => {
     try {
         await Organizador.destroy({ where: {}})

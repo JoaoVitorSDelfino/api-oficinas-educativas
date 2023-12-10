@@ -29,7 +29,7 @@ app.use('/', require('./routes/install'))
 
 // Documentação swagger
 const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger_doc.json')
+const swaggerFile = require('./swagger-documentation.json')
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 

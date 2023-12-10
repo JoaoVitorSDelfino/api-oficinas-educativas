@@ -13,7 +13,7 @@
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "description": "Rota raiz",
         "responses": {
           "200": {
             "description": "OK"
@@ -23,10 +23,11 @@
     },
     "/protected": {
       "get": {
-        "description": "",
+        "description": "Rota protegida por token, todas as rotas com /protected são protegidas",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -43,17 +44,18 @@
     },
     "/protected/api": {
       "get": {
-        "description": "",
+        "description": "Rota destinada para operações de API",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -66,17 +68,18 @@
     },
     "/protected/api/operations": {
       "get": {
-        "description": "",
+        "description": "Rota destinada para operações envolvendo lógica de negócio",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -89,10 +92,11 @@
     },
     "/protected/api/operations/ranking": {
       "get": {
-        "description": "",
+        "description": "Essa rota cria um ranking de usuarios que mais organizaram oficinas",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -112,7 +116,7 @@
     },
     "/protected/api/operations/workedTogether/{idUsuario}": {
       "get": {
-        "description": "",
+        "description": "Essa rota cria recebe um usuário, e retorna todos os usuários que já participou de uma oficina com ele, junto com a quantidade de vezes que participaram juntos",
         "parameters": [
           {
             "name": "idUsuario",
@@ -122,6 +126,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -141,7 +146,7 @@
     },
     "/protected/api/oficinas/list/{limite}/{pagina}": {
       "get": {
-        "description": "",
+        "description": "Rota para listar oficinas, precisa ser informado um limite e uma página",
         "parameters": [
           {
             "name": "limite",
@@ -157,6 +162,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -179,12 +185,34 @@
     },
     "/protected/api/oficinas/add": {
       "post": {
-        "description": "",
+        "description": "Rota para adicionar oficinas",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "Nome de Oficina"
+                },
+                "descricao": {
+                  "example": "Descrição exemplo"
+                },
+                "data": {
+                  "example": "08-08-2018"
+                },
+                "local": {
+                  "example": "Local exemplo"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -208,7 +236,7 @@
     },
     "/protected/api/oficinas/view/{id}": {
       "get": {
-        "description": "",
+        "description": "Rota para pesquisar oficinas por meio do id",
         "parameters": [
           {
             "name": "id",
@@ -218,6 +246,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -240,7 +269,7 @@
     },
     "/protected/api/oficinas/edit/{id}": {
       "put": {
-        "description": "",
+        "description": "Rota para editar oficinas por meio do id de oficinas",
         "parameters": [
           {
             "name": "id",
@@ -250,8 +279,30 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "Nome de Oficina Editado"
+                },
+                "descricao": {
+                  "example": "Descrição editada"
+                },
+                "data": {
+                  "example": "02-02-2018"
+                },
+                "local": {
+                  "example": "Local editado"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -275,7 +326,7 @@
     },
     "/protected/api/oficinas/delete/{id}": {
       "delete": {
-        "description": "",
+        "description": "Rota para deletar oficinas por meio do id da oficina",
         "parameters": [
           {
             "name": "id",
@@ -285,6 +336,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -310,7 +362,7 @@
     },
     "/protected/api/usuarios/list/{limite}/{pagina}": {
       "get": {
-        "description": "",
+        "description": "Rota para listar usuários, precisa ser informado um limite e uma página",
         "parameters": [
           {
             "name": "limite",
@@ -326,6 +378,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -351,12 +404,34 @@
     },
     "/protected/api/usuarios/add": {
       "post": {
-        "description": "",
+        "description": "Rota para adicionar usuários comuns, como alunos e professores.",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "funcao": {
+                  "example": "professor"
+                },
+                "nome": {
+                  "example": "Matheus Silva"
+                },
+                "senha": {
+                  "example": "senha123"
+                },
+                "email": {
+                  "example": "matheussilva@gmail.com"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -380,7 +455,7 @@
     },
     "/protected/api/usuarios/view/{id}": {
       "get": {
-        "description": "",
+        "description": "Rota para pesquisar usuários por meio do id de usuário",
         "parameters": [
           {
             "name": "id",
@@ -390,6 +465,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -415,16 +491,18 @@
     },
     "/protected/api/usuarios/edit/{id}": {
       "put": {
-        "description": "",
+        "description": "Rota para editar usuário pelo id",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "id do usuários que deseja editar"
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           },
@@ -435,7 +513,16 @@
               "type": "object",
               "properties": {
                 "funcao": {
-                  "example": "any"
+                  "example": "professor"
+                },
+                "nome": {
+                  "example": "Nome Editado"
+                },
+                "senha": {
+                  "example": "novaSenha123"
+                },
+                "email": {
+                  "example": "nomeeditado@gmail.com"
                 }
               }
             }
@@ -462,7 +549,7 @@
     },
     "/protected/api/usuarios/delete/{id}": {
       "delete": {
-        "description": "",
+        "description": "Rota para deletar usuários por meio do id do usuário",
         "parameters": [
           {
             "name": "id",
@@ -472,6 +559,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -497,7 +585,7 @@
     },
     "/protected/api/organizadores/list/{limite}/{pagina}": {
       "get": {
-        "description": "",
+        "description": "Rota para listar organizadores, precisa ser informado um limite e uma página",
         "parameters": [
           {
             "name": "limite",
@@ -513,6 +601,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -532,10 +621,11 @@
     },
     "/protected/api/organizadores/add": {
       "post": {
-        "description": "",
+        "description": "Rota para adicionar organizadores",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           },
@@ -546,10 +636,10 @@
               "type": "object",
               "properties": {
                 "idUsuario": {
-                  "example": "any"
+                  "example": 1
                 },
                 "idOficina": {
-                  "example": "any"
+                  "example": 2
                 }
               }
             }
@@ -576,7 +666,7 @@
     },
     "/protected/api/organizadores/view/{id}": {
       "get": {
-        "description": "",
+        "description": "Rota para pesquisar organizadores por meio do id de organizador",
         "parameters": [
           {
             "name": "id",
@@ -586,6 +676,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -608,7 +699,7 @@
     },
     "/protected/api/organizadores/edit/{id}": {
       "put": {
-        "description": "",
+        "description": "Rota para editar organizadores pelo id de organizador",
         "parameters": [
           {
             "name": "id",
@@ -618,8 +709,24 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "idUsuario": {
+                  "example": 6
+                },
+                "idOficina": {
+                  "example": 10
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -643,7 +750,7 @@
     },
     "/protected/api/organizadores/delete/{idUsuario}/{idOficina}": {
       "delete": {
-        "description": "",
+        "description": "Rota para excluir organizador por meio do id de usuário e oficina",
         "parameters": [
           {
             "name": "idUsuario",
@@ -659,6 +766,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -684,7 +792,7 @@
     },
     "/protected/api/organizadores/deleteById/{id}": {
       "delete": {
-        "description": "",
+        "description": "Rota para deletar organizador por meio de id de organizador",
         "parameters": [
           {
             "name": "id",
@@ -694,6 +802,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -719,7 +828,7 @@
     },
     "/protected/api/participantes/list/{limite}/{pagina}": {
       "get": {
-        "description": "",
+        "description": "Rota para listar participantes, precisa ser informado um limite e uma página",
         "parameters": [
           {
             "name": "limite",
@@ -735,6 +844,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -754,10 +864,11 @@
     },
     "/protected/api/participantes/add": {
       "post": {
-        "description": "",
+        "description": "Rota para adicionar participantes",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           },
@@ -767,8 +878,17 @@
             "schema": {
               "type": "object",
               "properties": {
+                "idUsuario": {
+                  "example": 1
+                },
                 "idOficina": {
-                  "example": "any"
+                  "example": 2
+                },
+                "presente": {
+                  "example": 1
+                },
+                "nota": {
+                  "example": 10.0
                 }
               }
             }
@@ -795,7 +915,7 @@
     },
     "/protected/api/participantes/view/{id}": {
       "get": {
-        "description": "",
+        "description": "Rota para pesquisar participantes pelo id de participante",
         "parameters": [
           {
             "name": "id",
@@ -805,6 +925,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -827,7 +948,7 @@
     },
     "/protected/api/participantes/edit/{idUsuario}/{idOficina}": {
       "put": {
-        "description": "",
+        "description": "Rota para editar participantes pelo id de usuário e oficina",
         "parameters": [
           {
             "name": "idUsuario",
@@ -843,8 +964,24 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "presente": {
+                  "example": 0
+                },
+                "nota": {
+                  "example": 0.0
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -868,7 +1005,7 @@
     },
     "/protected/api/participantes/editById/{id}": {
       "put": {
-        "description": "",
+        "description": "Rota para editar participantes pelo id de participante",
         "parameters": [
           {
             "name": "id",
@@ -878,6 +1015,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           },
@@ -887,8 +1025,17 @@
             "schema": {
               "type": "object",
               "properties": {
+                "idUsuario": {
+                  "example": 2
+                },
                 "idOficina": {
-                  "example": "any"
+                  "example": 3
+                },
+                "presente": {
+                  "example": 0
+                },
+                "nota": {
+                  "example": 0.0
                 }
               }
             }
@@ -915,7 +1062,7 @@
     },
     "/protected/api/participantes/delete/{idUsuario}/{idOficina}": {
       "delete": {
-        "description": "",
+        "description": "Rota para deletar participante por meio do id de usuário e oficina",
         "parameters": [
           {
             "name": "idUsuario",
@@ -931,6 +1078,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -956,7 +1104,7 @@
     },
     "/protected/api/participantes/deleteById/{id}": {
       "delete": {
-        "description": "",
+        "description": "Rota para deletar participante por meio do id de participante",
         "parameters": [
           {
             "name": "id",
@@ -966,6 +1114,7 @@
           },
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -991,10 +1140,11 @@
     },
     "/protected/admin": {
       "get": {
-        "description": "",
+        "description": "Rota destinada a usuários administradores",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -1014,10 +1164,11 @@
     },
     "/protected/admin/add-admin": {
       "post": {
-        "description": "",
+        "description": "Rota para adicionar usuários administradores, é acessível apenas para outros administradores",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           },
@@ -1028,7 +1179,7 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "Nome Admin"
                 },
                 "senha": {
                   "example": "any"
@@ -1058,10 +1209,11 @@
     },
     "/protected/drop-data": {
       "delete": {
-        "description": "",
+        "description": "Rota teste para deletar banco de dados",
         "parameters": [
           {
             "name": "authorization",
+            "description": "Inserir token válido",
             "in": "header",
             "type": "string"
           }
@@ -1081,7 +1233,7 @@
     },
     "/login": {
       "post": {
-        "description": "",
+        "description": "Rota para realizar login, após realizado, será gerado um token, usando esse token será possível acessar outras rotas da API, dependendo das permissões do usuário logado",
         "parameters": [
           {
             "name": "body",
@@ -1090,10 +1242,10 @@
               "type": "object",
               "properties": {
                 "login": {
-                  "example": "any"
+                  "example": "U11111"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "senhausuario"
                 }
               }
             }
@@ -1111,7 +1263,7 @@
     },
     "/install": {
       "get": {
-        "description": "",
+        "description": "Rota para instalar dados iniciais do banco de dados",
         "responses": {
           "201": {
             "description": "Created"
