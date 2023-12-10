@@ -15,7 +15,7 @@ router.delete('/drop-data', async (req, res) => {
 
         res.status(201).json({mensagem: 'Sucesso ao deletar banco de dados!'})
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO ao deletar banco de dados.'})
     }
 })

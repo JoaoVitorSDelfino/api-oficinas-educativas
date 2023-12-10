@@ -74,6 +74,7 @@ router.get('/view/:id', async (req, res) => {
             res.status(400).json(participante)
         }
     } catch (error) {
+        console.error(error)
         res.status(500).json({error: 'ERRO ao buscar participante'})
     }
 })

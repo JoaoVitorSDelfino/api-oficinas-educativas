@@ -20,7 +20,7 @@ router.get('/list/:limite/:pagina', async (req, res) => {
             res.status(400).json(listaPaginada)
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO buscar lista de organizadores'})
     }
 })
@@ -96,6 +96,7 @@ router.put('/edit/:id', verifyAdmin, async (req, res) => {
             res.status(400).json(organizadorAtualizado)
         }
     } catch (error) {
+        console.error(error)
         res.status(500).json({error: 'ERRO ao editar organizador.'})
     }
 })

@@ -50,7 +50,7 @@ router.post('/add', verifyProfessor, async (req, res) => {
             res.status(400).json({adicionar: oficina})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao criar oficina.'})
     }
 })
@@ -67,7 +67,7 @@ router.get('/view/:id', async (req, res) => {
             res.status(400).json({busca: oficina})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao buscar oficina'})
     }
 })
@@ -109,7 +109,7 @@ router.put('/edit/:id', verifyProfessor, async (req, res) => {
             res.status(400).json({status: false, mensagem: 'ERRO, você não tem permissão para editar oficinas em que você não é um organizador!'})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao editar oficina.'})
     }
 })
@@ -158,7 +158,7 @@ router.delete('/delete/:id', verifyProfessor, async (req, res) => {
             res.status(400).json({status: false, mensagem: 'ERRO, você não tem permissão para excluir oficinas em que você não é um organizador!'})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao deletar oficina.'})
     }
 })

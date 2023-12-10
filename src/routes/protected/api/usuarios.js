@@ -6,8 +6,6 @@ const jwt = require('jsonwebtoken')
 const verifyProfessor = require('../../../middlewares/verifyProfessor')
 const verifyAdmin = require('../../../middlewares/verifyAdmin')
 
-const validation = require('../../../controller/controller')
-
 // Rota para obter lista de usuários
 router.get('/list/:limite/:pagina', verifyProfessor, async (req, res) => {
     try {
@@ -37,7 +35,7 @@ router.post('/add', verifyProfessor, async (req, res) => {
             res.status(400).json(usuario)
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao criar usuario.'})
     }
 })
@@ -54,7 +52,7 @@ router.get('/view/:id', verifyProfessor, async (req, res) => {
             res.status(400).json(usuario)
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao buscar usuário'})
     }
 })
@@ -97,7 +95,7 @@ router.put('/edit/:id', async (req, res) => {
         }
         return
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao editar usuário'})
     }
 })
@@ -114,9 +112,9 @@ router.delete('/delete/:id', verifyAdmin, async (req, res) => {
             res.status(400).json(usuarioExcluido)
         }   
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({error: 'ERRO ao deletar usuario.'})
     }
 })
 
-module.exports = router;
+module.exports = router

@@ -4,7 +4,7 @@ function normalizarString(str) {
     return str
         .toLowerCase()                      // Converter para minúsculas
         .normalize('NFD')                   // Normalizar para decompor acentos e caracteres especiais
-        .replace(/[\u0300-\u036f]/g, '');   // Remover caracteres acentuados
+        .replace(/[\u0300-\u036f]/g, '')    // Remover caracteres acentuados
 }
 
 function validarFuncao(funcao) {
@@ -19,9 +19,9 @@ function validarFuncao(funcao) {
 }
 
 function validarEmail(email) {
-    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    return regexEmail.test(email);
+    return regexEmail.test(email)
 }
 
 const validateUsuario = (dados) => {

@@ -19,7 +19,7 @@ router.post('/add-admin', async (req, res) => {
             res.status(400).json({error: validateAdmin(req.body).mensagem})
         }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO ao criar usuario admin.'})
     }
 })

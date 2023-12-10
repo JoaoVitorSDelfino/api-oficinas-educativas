@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const db = require('../db/connection');
+const Sequelize = require('sequelize')
+const db = require('../db/connection')
 
 const Usuario = db.define('usuario', {
     id: {
@@ -35,8 +35,8 @@ const Usuario = db.define('usuario', {
         //          login: U0023
         hooks: {
             afterCreate: (usuario, options) => {
-                usuario.login = `U${String(usuario.id).padStart(4, '0')}`;
-                return usuario.save();
+                usuario.login = `U${String(usuario.id).padStart(4, '0')}`
+                return usuario.save()
             },
         },
     }

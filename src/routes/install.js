@@ -33,7 +33,7 @@ router.get('/install', async (req, res) => {
 
         res.status(201).json({mensagem: 'Sucesso ao instalar dados inicias!'})
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(400).json({error: 'ERRO ao instalar dados inciais.'})
     }
 })

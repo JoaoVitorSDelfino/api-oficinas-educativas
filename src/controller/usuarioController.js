@@ -53,7 +53,7 @@ module.exports = {
     deletar: async (id) => {
         const usuario = await Usuario.findOne({
             where: { id: id },
-        });
+        })
 
         // Valida se usuário informado existe
         if (usuario) { 

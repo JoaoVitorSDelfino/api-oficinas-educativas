@@ -45,15 +45,16 @@ router.get('/ranking', async (req, res) => {
             for (var j = 0; j < ranking.length - 1 - i; j++) {
                 // Troca os elementos se estiverem na ordem errada (decrescente)
                 if (ranking[j].oficinasOrganizadas < ranking[j + 1].oficinasOrganizadas) {
-                    var temp = ranking[j];
-                    ranking[j] = ranking[j + 1];
-                    ranking[j + 1] = temp;
+                    var temp = ranking[j]
+                    ranking[j] = ranking[j + 1]
+                    ranking[j + 1] = temp
                 }
             }
         }
 
         res.status(201).json({status: true, mensagem: 'Sucesso ao obter ranking de organizadores!', ranking: ranking})
     } catch (error) {
+        console.error(error)
         res.status(400).json({error: 'ERRO ao acessar a rota de ranking'})
     }
 })

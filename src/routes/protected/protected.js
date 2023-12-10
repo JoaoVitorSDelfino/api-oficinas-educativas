@@ -5,8 +5,12 @@ const router = express.Router()
 
 // Rota protegida
 router.get('/protected', authenticate, (req, res) => {
-  
-    res.json({ status: true, message: 'Rota protegida com sucesso!', userId: req.userId })
+    try {
+        res.status(200).json({ status: true, message: 'Você está na rota protected!' })
+    } catch (error) {
+        console.error(error)
+        res.json({ status: false, message: 'ERRO ao acessar rota protected!' })
+    }
 })
 
 router.use('/protected', authenticate)

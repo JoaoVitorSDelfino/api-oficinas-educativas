@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 
 const express = require("express")
 const app = express()
@@ -19,7 +19,7 @@ db.authenticate().then(() => {
 
 app.get('/', (req, res) => {
     res.send('')
-});
+})
 
 port = process.env.PORT
 
