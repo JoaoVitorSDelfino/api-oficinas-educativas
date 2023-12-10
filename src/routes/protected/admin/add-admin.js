@@ -4,6 +4,9 @@ const router = express.Router()
 const Usuario = require("../../../models/usuario")
 const {validateAdmin} = require('../../../controller/validate/usuarioValidation')
 
+// Rota destinada a adicionar usuários admin
+// Para deletar usuários, utilize a rota /protected/api/usuarios/delete/{id}
+// Apenas usuários administradores podem deletar usuários
 router.post('/add-admin', async (req, res) => {
     try {
         // Valida os dados recebidos
